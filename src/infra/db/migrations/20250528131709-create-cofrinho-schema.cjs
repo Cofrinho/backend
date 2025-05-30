@@ -42,6 +42,7 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
+      access_code: { type: Sequelize.TEXT, allowNull: false, unique: true },
       name: { type: Sequelize.TEXT, allowNull: false },
       description: { type: Sequelize.TEXT },
       group_owner: { type: Sequelize.INTEGER, allowNull: false },
@@ -276,6 +277,11 @@ module.exports = {
       },
       value: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
       user_id: { type: Sequelize.INTEGER, allowNull: false },
+      institution_id: { type: Sequelize.INTEGER, allowNull: false },
+      type: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
       status: {
         type: Sequelize.TEXT,
         allowNull: false,
@@ -389,6 +395,13 @@ module.exports = {
       type: 'foreign key',
       name: 'fk_recharge_funds_user',
       references: { table: 'users', field: 'id' },
+    });
+
+    await queryInterface.addConstraint('recharge_funds_transactions', {
+      fields: ['institution_id'],
+      type: 'foreign key',
+      name: 'fk_recharge_funds_institution',
+      references: { table: 'institutions', field: 'id' },
     });
   },
 
