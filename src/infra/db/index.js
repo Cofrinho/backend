@@ -9,7 +9,7 @@ import { GroupParticipant } from '../../domain/models/GroupParticipant.js';
 import { GroupTransaction } from '../../domain/models/GroupTransaction.js';
 import { Institution } from '../../domain/models/Institution.js';
 import { OpenFinanceAccount } from '../../domain/models/OpenFinanceAccount.js';
-import { RechargeFoundsTransaction } from '../../domain/models/RechargeFoundsTransaction.js';
+import { RechargeFundsTransaction } from '../../domain/models/RechargeFundsTransaction.js';
 import { User } from '../../domain/models/User.js';
 
 const models = [
@@ -22,7 +22,7 @@ const models = [
   GroupTransaction,
   Institution,
   OpenFinanceAccount,
-  RechargeFoundsTransaction,
+  RechargeFundsTransaction,
   User,
 ];
 
