@@ -409,11 +409,11 @@ module.exports = {
     await queryInterface.dropTable('recharge_funds_transactions');
     await queryInterface.dropTable('expenses_payments');
     await queryInterface.dropTable('expense_members');
+    await queryInterface.dropTable('group_transactions');
     await queryInterface.dropTable('expenses');
     await queryInterface.dropTable('open_finance_accounts');
     await queryInterface.dropTable('institutions');
     await queryInterface.dropTable('accounts');
-    await queryInterface.dropTable('group_transactions');
     await queryInterface.dropTable('group_participants');
     await queryInterface.dropTable('groups');
     await queryInterface.dropTable('users');
