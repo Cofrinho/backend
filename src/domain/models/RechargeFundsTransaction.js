@@ -18,6 +18,14 @@ export class RechargeFundsTransaction extends Model {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
+        institution_id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+        type: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+        },
         status: {
           type: DataTypes.TEXT,
           allowNull: false,
@@ -34,6 +42,13 @@ export class RechargeFundsTransaction extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.User, { foreignKey: 'user_id' });
+    this.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      as: 'user',
+    });
+    this.belongsTo(models.Institution, {
+      foreignKey: 'institution_id',
+      as: 'institution',
+    });
   }
 }

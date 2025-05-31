@@ -10,6 +10,12 @@ export class Group extends Model {
           primaryKey: true,
           allowNull: false,
         },
+        access_code: {
+          type: DataTypes.STRING(6),
+          allowNull: false,
+          unique: true,
+          validate: { len: [6, 6] },
+        },
         name: {
           type: DataTypes.TEXT,
           allowNull: false,
