@@ -205,7 +205,7 @@ module.exports = {
         defaultValue: 'PENDING',
       },
       paid_at: { type: Sequelize.DATE },
-      expense_type: { type: Sequelize.TEXT },
+      expense_type: { type: Sequelize.TEXT, allowNull: false },
       due_date: { type: Sequelize.DATEONLY, allowNull: false },
       created_at: {
         type: Sequelize.DATE,
