@@ -38,7 +38,7 @@ export class Expense extends Model {
         },
         expense_type: {
           type: DataTypes.TEXT,
-          allowNull: true,
+          allowNull: false,
         },
         due_date: {
           type: DataTypes.DATEONLY,
