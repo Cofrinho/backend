@@ -1,4 +1,4 @@
-export class UpdateGroupDTO {
+export default class UpdateGroupDTO {
   constructor({ id, access_code, name, description, group_owner, balance }) {
     this.id = id;
     this.name = name ?? undefined;

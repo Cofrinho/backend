@@ -1,4 +1,4 @@
-export class CreateGroupDTO {
+export default class CreateGroupDTO {
   constructor({ access_code, name, description, group_owner }) {
     this.name = name;
     this.access_code = access_code;
