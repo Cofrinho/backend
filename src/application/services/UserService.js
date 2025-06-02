@@ -6,8 +6,6 @@ import { ReactivateUserDTO } from '../dtos/ReactivateUserDTO.js';
 export default class UserService {
   static async create(userDTO) {
     const inactiveUser = await UserRepository.findInactiveUser(userDTO);
-    console.log(userDTO);
-    console.log(inactiveUser);
 
     if (inactiveUser) {
       const isActiveUser = await UserRepository.reactivateUser(inactiveUser.id);
