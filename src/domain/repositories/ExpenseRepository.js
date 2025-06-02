@@ -7,6 +7,29 @@ class ExpenseRepository {
     return expenses;
 
   }
+
+  async findByIdAndGroup(id, groupId){
+
+  const expense = await Expense.findOne({ where: { id, group_id: groupId }});
+  return expense;
+
+  }
+
+  async findById(id){
+    const expenses = await Expense.findByPk(id);
+    return expenses;
+  }
+
+  async save(data){
+    const expense = await Expense.create(data);
+    return expense;
+
+  }
+
+  async findByName(name){
+    const expense = await Expense.findOne({ where: { name }});
+    return expense;
+  }
 }
 
 export { ExpenseRepository };
