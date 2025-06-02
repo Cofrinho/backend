@@ -2,8 +2,7 @@ import GroupParticipantRepository from '../../domain/repositories/GroupParticipa
 import GroupRepository from '../../domain/repositories/GroupRepository.js';
 import UserRepository from '../../domain/repositories/UserRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
-import { CreateGroupParticipantDTO } from '../dtos/CreateGroupParticipantDTO.js';
-import { UpdateGroupParticipantDTO } from '../dtos/UpdateGroupParticipantDTO.js';
+import GroupParticipantDTO from '../dtos/GroupParticipantDTO.js';
 
 export default class GroupParticipantService {
   static async create(participantDTO) {
@@ -55,7 +54,7 @@ export default class GroupParticipantService {
       );
     }
 
-    const createDTO = new CreateGroupParticipantDTO({ group_id, user_id });
+    const createDTO = new GroupParticipantDTO({ group_id, user_id });
     const participant = await GroupParticipantRepository.create(createDTO);
     return participant;
   }
@@ -116,7 +115,7 @@ export default class GroupParticipantService {
       throw new AppError('No valid data provided to update.', 400);
     }
 
-    const dtoInstance = new UpdateGroupParticipantDTO(updateParticipantDTO);
+    const dtoInstance = new GroupParticipantDTO(updateParticipantDTO);
     const updated = await GroupParticipantRepository.update(dtoInstance);
 
     if (!updated) {
