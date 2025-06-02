@@ -1,6 +1,6 @@
 import express from 'express';
 import { expensesRoutes } from './http/routes/expensesRoutes.js';
-import { userRoutes } from './http/routes/UserRoutes.js';
+import { userRoutes } from './http/routes/userRoutes.js';
 
 const app = express();
 app.use(express.json());
