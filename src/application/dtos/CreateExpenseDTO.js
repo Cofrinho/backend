@@ -1,0 +1,12 @@
+class CreateExpenseDTO {
+  constructor(data, groupId){
+    this.group_id = groupId;
+    this.name = data.name;
+    this.description = data.description;
+    this.value = data.value;
+    this.due_date = data.dueDate;
+    this.participants = data.participants;
+  }
+}
+
+export { CreateExpenseDTO };
