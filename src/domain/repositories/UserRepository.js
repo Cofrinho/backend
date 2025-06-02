@@ -26,6 +26,12 @@ export default class UserRepository {
     });
   }
 
+  static async findByEmail(email) {
+    return await User.findOne({
+      where: { email, deactivated_at: null },
+    });
+  }
+
   static async cpfExists(cpf) {
     return await User.findOne({
       where: { cpf },
