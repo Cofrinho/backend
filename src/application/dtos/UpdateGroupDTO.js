@@ -1,0 +1,10 @@
+export class UpdateGroupDTO {
+  constructor({ id, access_code, name, description, group_owner, balance }) {
+    this.id = id;
+    this.name = name ?? undefined;
+    this.access_code = access_code ?? undefined;
+    this.description = description ?? undefined;
+    this.group_owner = group_owner ?? undefined;
+    this.balance = balance ?? undefined;
+  }
+}
