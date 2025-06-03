@@ -1,9 +1,16 @@
 import { Router } from 'express';
 import GroupController from '../controllers/GroupController.js';
+import { ExpenseController } from '../controllers/ExpenseController.js';
 
 const router = new Router();
 
 router.get('/', GroupController.getAll);
+
+router.get('/:id/expenses', ExpenseController.getAllByGroup);
+router.get('/:id/expenses/:expenseId', ExpenseController.getByIdAndGroup);
+router.get('/:id/expenses/:expenseId/members', ExpenseController.getMembers);
+router.post('/:groupId/expenses', ExpenseController.save);
+
 router.get('/:id', GroupController.getById);
 router.get('/access/:accessCode', GroupController.getByAccessCode);
 router.post('/', GroupController.create);
