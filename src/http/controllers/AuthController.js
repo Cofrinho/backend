@@ -3,7 +3,10 @@ import UserService from '../../application/services/UserService.js';
 import { LoginDTO } from '../../application/dtos/LoginDTO.js';
 import { loginSchema } from '../validations/userValidator.js';
 
-import { createUserSchema } from '../validations/userValidator.js';
+import {
+  createUserSchema,
+  resetPasswordSchema,
+} from '../validations/userValidator.js';
 import { CreateUserDTO } from '../../application/dtos/CreateUserDTO.js';
 
 import { ZodError } from 'zod';
@@ -78,8 +81,51 @@ export default class AuthController {
     try {
       await AuthService.verifyEmail(token);
 
-      return res.status(200).json({ message: 'Email successfully verified' });
+      return res.status(200).json({ message: 'Email successfully verified.' });
     } catch (error) {
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
+  static async forgotPassword(req, res) {
+    const { email } = req.body;
+
+    try {
+      await AuthService.forgotPassword(email);
+
+      return res.status(200).json({ message: 'Code sent to your email.' });
+    } catch (error) {
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
+  static async validateResetCode(req, res) {
+    const { email, code } = req.body;
+
+    try {
+      await AuthService.validateResetCode(email, code);
+
+      return res.status(200).json({ valid: true });
+    } catch (error) {
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
+  static async resetPassword(req, res) {
+    const { email, newPassword } = req.body;
+
+    try {
+      const validatedData = resetPasswordSchema.parse({ newPassword });
+
+      await AuthService.resetPassword(email, validatedData.newPassword);
+
+      return res
+        .status(200)
+        .json({ message: 'Password successfully updated.' });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const formattedErrors = error.errors
+          .map((err) => err.message)
+          .join(', ');
+        return res.status(400).json({ error: formattedErrors });
+      }
       return res.status(error.statusCode || 500).json({ error: error.message });
     }
   }

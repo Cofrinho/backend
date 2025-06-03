@@ -40,4 +40,29 @@ export const EmailService = {
   `,
     });
   },
+  async sendEmailPasswordReset(to, code) {
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to,
+      subject: '🔐 Seu código para redefinir a senha chegou!',
+      html: `
+  <div style="font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+    <h2 style="color: #2d8f6f;">Oi! Esqueceu a senha?</h2>
+    <p>Tudo bem, acontece com os melhores. 😅</p>
+    <p>Use o código abaixo para redefinir sua senha e voltar a cuidar do seu <strong>Cofrinho</strong> como um(a) verdadeiro(a) mestre das finanças:</p>
+
+    <div style="text-align: center; margin: 30px 0;">
+      <p style="font-size: 18px; margin-bottom: 10px;">Seu código:</p>
+      <div style="display: inline-block; padding: 12px 20px; background-color: #2d8f6f; color: #fff; font-size: 24px; font-weight: bold; border-radius: 8px;">
+        ${code}
+      </div>
+    </div>
+
+    <p>Se você não pediu isso, pode ignorar este e-mail. Seu Cofrinho continua seguro e trancado. 🔒</p>
+
+    <p style="margin-top: 30px;">Abraços da equipe Cofrinho 🐷</p>
+  </div>
+`,
+    });
+  },
 };

@@ -7,4 +7,4 @@ const generateRandomCode = (length) => {
   return result;
 };
 
-module.exports = generateRandomCode;
+export default generateRandomCode;

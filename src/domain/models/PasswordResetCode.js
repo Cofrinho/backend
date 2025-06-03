@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
-export class PasswordResetCodes extends Model {
+export class PasswordResetCode extends Model {
   static init(sequelize) {
     return super.init(
       {
