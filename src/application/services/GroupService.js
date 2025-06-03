@@ -2,12 +2,38 @@ import GroupRepository from '../../domain/repositories/GroupRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import CreateGroupDTO from '../dtos/CreateGroupDTO.js';
 import UpdateGroupDTO from '../dtos/UpdateGroupDTO.js';
+import generateRandomCode from '../../shared/utils/generateRandomCode.js';
 
 export default class GroupService {
   static async create(groupDTO) {
-    const inactiveGroup = await GroupRepository.findInactiveGroupByAccessCode(
-      groupDTO.access_code,
-    );
+    let access_code;
+    let isUnique = false;
+    let attempts = 0;
+    const MAX_ATTEMPTS = 50;
+
+    while (!isUnique && attempts < MAX_ATTEMPTS) {
+      attempts++;
+      access_code = generateRandomCode(4);
+
+      const activeGroup = await GroupRepository.findByAccessCode(access_code);
+
+      const inactiveGroup =
+        await GroupRepository.findInactiveGroupByAccessCode(access_code);
+
+      if (!activeGroup && !inactiveGroup) {
+        isUnique = true;
+      }
+    }
+
+    if (!isUnique) {
+      throw new AppError(
+        'Could not generate a unique access code. Please try again.',
+        500,
+      );
+    }
+
+    const inactiveGroup =
+      await GroupRepository.findInactiveGroupByAccessCode(access_code);
 
     if (inactiveGroup) {
       const reactivateDTO = new UpdateGroupDTO({
@@ -23,6 +49,7 @@ export default class GroupService {
       if (!updated) {
         throw new AppError('Unable to reactivate and update the group.', 400);
       }
+
       const reactivatedGroup = await GroupRepository.findById(inactiveGroup.id);
       return {
         message: 'Group reactivated and updated successfully.',
@@ -30,15 +57,7 @@ export default class GroupService {
       };
     }
 
-    const accessCodeExists = await GroupRepository.findByAccessCode(
-      groupDTO.access_code,
-    );
-
-    if (accessCodeExists) {
-      throw new AppError('Access code already in use by an active group.', 400);
-    }
-
-    const createDTO = new CreateGroupDTO(groupDTO);
+    const createDTO = new CreateGroupDTO({ ...groupDTO, access_code });
     const group = await GroupRepository.create(createDTO);
     return group;
   }

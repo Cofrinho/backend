@@ -1,9 +1,6 @@
 import { z } from 'zod';
 
 export const createGroupSchema = z.object({
-  access_code: z
-    .string()
-    .length(6, 'Access code must contain exactly 6 characters.'),
   name: z.string().min(1, 'Group name is required.'),
   description: z.string().optional(),
   group_owner: z.number({
@@ -19,10 +16,14 @@ export const updateGroupSchema = z.object({
   }),
   access_code: z
     .string()
-    .length(6, 'Access code must contain exactly 6 characters.')
+    .length(4, 'Access code must contain exactly 4 characters.')
     .optional(),
   name: z.string().min(1, 'Group name is required.').optional(),
   description: z.string().optional(),
   group_owner: z.number().optional(),
-  balance: z.number().optional(),
+  balance: z
+    .number({
+      invalid_type_error: 'Balance must be a number',
+    })
+    .optional(),
 });
