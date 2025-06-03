@@ -10,7 +10,7 @@ const expenseMemberService = new ExpenseMemberService();
 const ExpenseController = {
   async getAllByGroup(req, res) {
     try {
-      const expense = await expenseService.getAllByGroup(req.params.groupId);
+      const expense = await expenseService.getAllByGroup(req.params.id);
       return res.status(200).json(expense);
     } catch (error) {
       res.status(error.statusCode || 500).json({ error: error.message });
@@ -20,8 +20,8 @@ const ExpenseController = {
   async getByIdAndGroup(req, res) {
     try {
       const expenses = await expenseService.getByIdAndGroup(
+        req.params.expenseId,
         req.params.id,
-        req.params.groupId,
       );
       return res.status(200).json(expenses);
     } catch (error) {
@@ -50,9 +50,9 @@ const ExpenseController = {
   },
 
   async getMembers(req, res) {
-    const { id } = req.params;
+    const { id: groupId , expenseId} = req.params;
     try {
-      const payments = await expenseMemberService.getMembersByExpense(id);
+      const payments = await expenseMemberService.getMembersByExpense(groupId, expenseId);
       return res.status(200).json(payments);
     } catch (error) {
       res.status(error.statusCode || 500).json({ error: error.message });
