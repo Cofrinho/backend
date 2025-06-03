@@ -6,6 +6,7 @@ class CreateExpenseDTO {
     this.value = data.value;
     this.due_date = data.dueDate;
     this.participants = data.participants;
+    this.expense_type = data.expenseType;
   }
 }
 
