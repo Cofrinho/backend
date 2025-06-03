@@ -1,9 +1,6 @@
 import { z } from 'zod';
 
 export const createGroupSchema = z.object({
-  access_code: z
-    .string()
-    .length(4, 'Access code must contain exactly 4 characters.'),
   name: z.string().min(1, 'Group name is required.'),
   description: z.string().optional(),
   group_owner: z.number({
