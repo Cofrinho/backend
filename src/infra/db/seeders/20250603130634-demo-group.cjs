@@ -1,6 +1,5 @@
 'use strict';
-
-const generateRandomCode = require('../../utils/generateRandomCode.js');
+const generateRandomCode = require('../../../shared/utils/generateRandomCode.cjs');
 
 module.exports = {
   async up(queryInterface) {
