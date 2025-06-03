@@ -8,5 +8,6 @@ router.post('/login', AuthController.login);
 router.post('/register', AuthController.register);
 router.post('/refresh', AuthController.refresh);
 router.get('/me', AuthMiddleware, AuthController.getMe);
+router.get('/verify-email', AuthController.verifyEmail);
 
 export { router as authRoutes };

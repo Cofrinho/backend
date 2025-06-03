@@ -77,4 +77,11 @@ export default class UserRepository {
     );
     return updatedRowsCount > 0;
   }
+
+  static async verifyEmail(id) {
+    return await User.update(
+      { email_verified_at: new Date() },
+      { where: { id } },
+    );
+  }
 }

@@ -32,9 +32,26 @@ const verifyRefreshToken = (token) => {
   }
 };
 
+function generateEmailVerificationToken(payload) {
+  return jwt.sign(payload, process.env.EMAIL_VERIFICATION_SECRET, {
+    expiresIn: '1d',
+  });
+}
+
+const verifyEmailVerificationToken = (token) => {
+  try {
+    const decoded = jwt.verify(token, process.env.EMAIL_VERIFICATION_SECRET);
+    return { valid: true, decoded };
+  } catch {
+    return { valid: false, decoded: null };
+  }
+};
+
 export {
   generateAccessToken,
   generateRefreshToken,
   verifyAccessToken,
   verifyRefreshToken,
+  generateEmailVerificationToken,
+  verifyEmailVerificationToken,
 };

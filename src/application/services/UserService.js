@@ -2,6 +2,8 @@ import UserRepository from '../../domain/repositories/UserRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import { hashPassword, checkPasswordHash } from '../../shared/utils/hash.js';
 import { ReactivateUserDTO } from '../dtos/ReactivateUserDTO.js';
+import { generateEmailVerificationToken } from '../../shared/utils/jwt.js';
+import { EmailService } from '../../shared/utils/mailer.js';
 
 export default class UserService {
   static async create(userDTO) {
@@ -53,6 +55,19 @@ export default class UserService {
     };
 
     const user = await UserRepository.create(userWithHashedPassword);
+
+    const jwtUserPaylod = {
+      userId: user.id,
+    };
+
+    const emailVerificationToken =
+      generateEmailVerificationToken(jwtUserPaylod);
+
+    await EmailService.sendEmailVerification(
+      user.email,
+      emailVerificationToken,
+    );
+
     return user;
   }
   static async getAll() {
