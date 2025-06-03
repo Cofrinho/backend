@@ -11,10 +11,10 @@ export class Group extends Model {
           allowNull: false,
         },
         access_code: {
-          type: DataTypes.STRING(6),
+          type: DataTypes.STRING(4),
           allowNull: false,
           unique: true,
-          validate: { len: [6, 6] },
+          validate: { len: [4, 4] },
         },
         name: {
           type: DataTypes.TEXT,
