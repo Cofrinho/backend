@@ -6,6 +6,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
+  verifyEmailVerificationToken,
 } from '../../shared/utils/jwt.js';
 import { MeDTO } from '../dtos/MeDTO.js';
 
@@ -65,5 +66,28 @@ export default class AuthService {
     }
 
     return new MeDTO(user);
+  }
+  static async verifyEmail(token) {
+    if (!token) {
+      throw new AppError('Refresh token not provided.', 401);
+    }
+
+    const { valid, decoded } = verifyEmailVerificationToken(token);
+
+    if (!valid) {
+      throw new AppError('Invalid or expired email verification token.', 401);
+    }
+
+    const user = await UserRepository.findById(decoded.userId);
+
+    if (!user) {
+      throw new AppError('User not found.', 404);
+    }
+
+    if (user.email_verified_at) {
+      throw new AppError('Email already verified.', 400);
+    }
+
+    return await UserRepository.verifyEmail(user.id);
   }
 }

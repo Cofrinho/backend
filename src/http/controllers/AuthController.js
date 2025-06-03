@@ -72,4 +72,15 @@ export default class AuthController {
       return res.status(error.statusCode || 500).json({ error: error.message });
     }
   }
+  static async verifyEmail(req, res) {
+    const { token } = req.query;
+
+    try {
+      await AuthService.verifyEmail(token);
+
+      return res.status(200).json({ message: 'Email successfully verified' });
+    } catch (error) {
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
 }
