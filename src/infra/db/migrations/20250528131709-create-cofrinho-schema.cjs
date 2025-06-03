@@ -42,7 +42,11 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      access_code: { type: Sequelize.TEXT, allowNull: false, unique: true },
+      access_code: {
+        type: Sequelize.STRING(4),
+        allowNull: false,
+        unique: true,
+      },
       name: { type: Sequelize.TEXT, allowNull: false },
       description: { type: Sequelize.TEXT },
       group_owner: { type: Sequelize.INTEGER, allowNull: false },
