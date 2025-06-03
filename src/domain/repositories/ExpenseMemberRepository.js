@@ -6,10 +6,10 @@ class ExpenseMemberRepository{
     return expenseMember;
   }
 
-  async findAllByExpense(expenseId){
+  async findAllByExpense(expense_id){
     const expenseMembers = await ExpenseMember.findAll({
       where: {
-        expense_id: expenseId
+        expense_id
       },
       include: [{
         model: User,

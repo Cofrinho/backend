@@ -16,7 +16,7 @@ class ExpenseMemberService {
      await this.expenseMemberRepository.createAll(participantsData);
   }
 
-  async getPaymentsByExpense(expenseId){
+  async getMembersByExpense(expenseId){
     const expenseMembers = await this.expenseMemberRepository.findAllByExpense(expenseId);
     return expenseMembers
   }

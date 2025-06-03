@@ -49,10 +49,10 @@ const ExpenseController = {
     }
   },
 
-  async getPayments(req, res) {
+  async getMembers(req, res) {
     const { id } = req.params;
     try {
-      const payments = await expenseMemberService.getPaymentsByExpense(id);
+      const payments = await expenseMemberService.getMembersByExpense(id);
       return res.status(200).json(payments);
     } catch (error) {
       res.status(error.statusCode || 500).json({ error: error.message });

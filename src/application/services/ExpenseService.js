@@ -40,25 +40,26 @@ class ExpenseService {
     return expense;
   }
 
-  async save(expenseDTO){
+  async save({group_id, name, description, value, due_date, expense_type, participants}){
 
-    if(await this.expenseRepository.findByName(expenseDTO.name)){
+    if(await this.expenseRepository.findByName(name)){
       throw new AppError('this name of expense exists', 409);
     }
 
-    if(!(await Group.findByPk(expenseDTO.group_id))){
+    if(!(await Group.findByPk(group_id))){
       throw new AppError('group not found', 404);
     }
 
     const { id: expenseId } = await this.expenseRepository.save({
-      group_id: expenseDTO.group_id,
-      name: expenseDTO.name,
-      description: expenseDTO.description,
-      value: expenseDTO.value,
-      due_date: expenseDTO.due_date
+      group_id,
+      name,
+      description,
+      value,
+      due_date,
+      expense_type
     });
 
-    await this.expenseMemberService.saveAll(expenseId, expenseDTO.participants);
+    await this.expenseMemberService.saveAll(expenseId, participants);
 
     return {
       success: true,
