@@ -41,6 +41,14 @@ class Database {
       }
     });
   }
+  getQueryInterface() {
+    if (!this.connection) {
+      throw new Error(
+        'Database connection not initialized. Cannot get QueryInterface.',
+      );
+    }
+    return this.connection.getQueryInterface();
+  }
 }
 
 export default new Database();
