@@ -35,6 +35,34 @@ module.exports = {
       },
     });
 
+    await queryInterface.createTable('password_reset_codes', {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
+      },
+      user_id: { type: Sequelize.INTEGER, allowNull: false },
+      code_hash: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      expires_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+    });
+
     await queryInterface.createTable('groups', {
       id: {
         type: Sequelize.INTEGER,
@@ -383,14 +411,14 @@ module.exports = {
     await queryInterface.addConstraint('expenses_payments', {
       fields: ['expense_id'],
       type: 'foreign key',
-      name: 'fk_expenses_transactions_expense',
+      name: 'fk_expenses_payments_expense',
       references: { table: 'expenses', field: 'id' },
     });
 
     await queryInterface.addConstraint('expenses_payments', {
       fields: ['user_id'],
       type: 'foreign key',
-      name: 'fk_expenses_transactions_user',
+      name: 'fk_expenses_payments_user',
       references: { table: 'users', field: 'id' },
     });
 
@@ -407,6 +435,13 @@ module.exports = {
       name: 'fk_recharge_funds_institution',
       references: { table: 'institutions', field: 'id' },
     });
+
+    await queryInterface.addConstraint('password_reset_codes', {
+      fields: ['user_id'],
+      type: 'foreign key',
+      name: 'fk_password_reset_codes_user',
+      references: { table: 'users', field: 'id' },
+    });
   },
 
   async down(queryInterface) {
@@ -420,6 +455,7 @@ module.exports = {
     await queryInterface.dropTable('accounts');
     await queryInterface.dropTable('group_participants');
     await queryInterface.dropTable('groups');
+    await queryInterface.dropTable('password_reset_codes');
     await queryInterface.dropTable('users');
   },
 };

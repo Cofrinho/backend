@@ -74,5 +74,6 @@ export class User extends Model {
     this.hasMany(models.ExpenseMember, { foreignKey: 'user_id' });
     this.hasMany(models.ExpensePayment, { foreignKey: 'user_id' });
     this.hasMany(models.RechargeFundsTransaction, { foreignKey: 'user_id' });
+    this.hasMany(models.PasswordResetCode, { foreignKey: 'user_id' });
   }
 }
