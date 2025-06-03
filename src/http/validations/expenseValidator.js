@@ -13,6 +13,7 @@ export const createExpenseSchema = z.object({
   dueDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: 'due date must be a valid date in ISO format (yyyy-mm-dd).',
   }),
+  expenseType: z.enum(['FIXED', 'INSTANT'], { required_error: 'Expense type is required'}),
   participants: z.array(participantSchema).min(1, 'Participants is required')
 });
 
