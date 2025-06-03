@@ -2,7 +2,7 @@ import GroupRepository from '../../domain/repositories/GroupRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import CreateGroupDTO from '../dtos/CreateGroupDTO.js';
 import UpdateGroupDTO from '../dtos/UpdateGroupDTO.js';
-import generateRandomCode from '../../shared/utils/generateRandomCode.cjs';
+import generateRandomCode from '../../shared/utils/generateRandomCode.js';
 
 export default class GroupService {
   static async create(groupDTO) {
