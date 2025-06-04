@@ -179,6 +179,9 @@ module.exports = {
         allowNull: false,
       },
       name: { type: Sequelize.TEXT, allowNull: false },
+      api_url: { type: Sequelize.TEXT, allowNull: false },
+      logo_url: { type: Sequelize.TEXT, allowNull: false },
+      color: { type: Sequelize.TEXT, allowNull: false },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
