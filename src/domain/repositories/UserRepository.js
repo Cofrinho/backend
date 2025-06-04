@@ -1,9 +1,12 @@
 import { User } from '../models/User.js';
+import { Account } from '../models/Account.js';
 import { Op } from 'sequelize';
 
 export default class UserRepository {
   static async create(userDTO) {
-    return await User.create(userDTO);
+    const user = await User.create(userDTO);
+    await Account.create({ user_id: user.id, balance: 0.0 });
+    return user;
   }
 
   static async findInactiveUser(userDTO) {

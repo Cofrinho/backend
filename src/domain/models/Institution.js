@@ -14,6 +14,18 @@ export class Institution extends Model {
           type: DataTypes.TEXT,
           allowNull: false,
         },
+        api_url: {
+          type: DataTypes.TEXT,
+          allowNull: true,
+        },
+        logo_url: {
+          type: DataTypes.TEXT,
+          allowNull: true,
+        },
+        color: {
+          type: DataTypes.TEXT,
+          allowNull: true,
+        },
       },
       {
         sequelize,
