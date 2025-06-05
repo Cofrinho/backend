@@ -321,6 +321,34 @@ module.exports = {
       updated_at: { type: Sequelize.DATE, allowNull: false },
     });
 
+    await queryInterface.createTable('notifications', {
+      id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        primaryKey: true,
+        allowNull: false,
+      },
+      user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      seen: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      recharge_id: {
+        type: Sequelize.UUID,
+        allowNull: true,
+      },
+      expense_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      created_at: { type: Sequelize.DATE, allowNull: false },
+      updated_at: { type: Sequelize.DATE, allowNull: false },
+    });
+
     // Foreign Keys
     await queryInterface.addConstraint('groups', {
       fields: ['group_owner'],
@@ -440,6 +468,24 @@ module.exports = {
       name: 'fk_password_reset_codes_user',
       references: { table: 'users', field: 'id' },
     });
+
+    await queryInterface.addConstraint('notifications', {
+      fields: ['user_id'],
+      type: 'foreign key',
+      references: { table: 'users', field: 'id' },
+    });
+
+    await queryInterface.addConstraint('notifications', {
+      fields: ['recharge_id'],
+      type: 'foreign key',
+      references: { table: 'recharge_funds_transactions', field: 'id' },
+    });
+
+    await queryInterface.addConstraint('notifications', {
+      fields: ['expense_id'],
+      type: 'foreign key',
+      references: { table: 'expenses', field: 'id' },
+    });
   },
 
   async down(queryInterface) {
@@ -455,5 +501,6 @@ module.exports = {
     await queryInterface.dropTable('groups');
     await queryInterface.dropTable('password_reset_codes');
     await queryInterface.dropTable('users');
+    await queryInterface.dropTable('notifications');
   },
 };
