@@ -10,7 +10,7 @@ export class RechargeFundsTransaction extends Model {
           primaryKey: true,
           allowNull: false,
         },
-        value: {
+        amount: {
           type: DataTypes.DECIMAL(10, 2),
           allowNull: false,
         },
@@ -25,11 +25,6 @@ export class RechargeFundsTransaction extends Model {
         type: {
           type: DataTypes.TEXT,
           allowNull: false,
-        },
-        status: {
-          type: DataTypes.TEXT,
-          allowNull: false,
-          defaultValue: 'PENDING',
         },
       },
       {
