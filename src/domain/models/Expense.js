@@ -27,6 +27,11 @@ export class Expense extends Model {
           allowNull: false,
           defaultValue: 0.0,
         },
+        balance: {
+          type: DataTypes.DECIMAL(10, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
         status: {
           type: DataTypes.TEXT,
           allowNull: false,
@@ -56,7 +61,7 @@ export class Expense extends Model {
 
   static associate(models) {
     this.belongsTo(models.Group, { foreignKey: 'group_id' });
-    this.hasMany(models.GroupTransaction, { foreignKey: 'expense_id' });
+    this.hasMany(models.ExpenseTransaction, { foreignKey: 'expense_id' });
     this.hasMany(models.ExpenseMember, { foreignKey: 'expense_id' });
     this.hasMany(models.ExpensePayment, { foreignKey: 'expense_id' });
   }

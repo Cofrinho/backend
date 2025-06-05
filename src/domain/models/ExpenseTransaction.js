@@ -1,17 +1,13 @@
 import { Model, DataTypes } from 'sequelize';
 
-export class GroupTransaction extends Model {
+export class ExpenseTransaction extends Model {
   static init(sequelize) {
     return super.init(
       {
         id: {
           type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV4, // gen_random_uuid() in DB
+          defaultValue: DataTypes.UUIDV4,
           primaryKey: true,
-          allowNull: false,
-        },
-        group_id: {
-          type: DataTypes.INTEGER,
           allowNull: false,
         },
         user_id: {
@@ -34,7 +30,7 @@ export class GroupTransaction extends Model {
       },
       {
         sequelize,
-        tableName: 'group_transactions',
+        tableName: 'expense_transactions',
         timestamps: true,
         underscored: true,
       },
@@ -42,7 +38,6 @@ export class GroupTransaction extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Group, { foreignKey: 'group_id' });
     this.belongsTo(models.User, { foreignKey: 'user_id' });
     this.belongsTo(models.Expense, { foreignKey: 'expense_id' });
   }
