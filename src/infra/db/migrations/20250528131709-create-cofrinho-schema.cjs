@@ -118,14 +118,13 @@ module.exports = {
       },
     });
 
-    await queryInterface.createTable('group_transactions', {
+    await queryInterface.createTable('expense_transactions', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.literal('gen_random_uuid()'),
         primaryKey: true,
         allowNull: false,
       },
-      group_id: { type: Sequelize.INTEGER, allowNull: false },
       user_id: { type: Sequelize.INTEGER, allowNull: false },
       expense_id: { type: Sequelize.INTEGER, allowNull: false },
       amount: {
@@ -230,6 +229,11 @@ module.exports = {
       name: { type: Sequelize.TEXT, allowNull: false },
       description: { type: Sequelize.TEXT },
       value: {
+        type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.0,
+      },
+      balance: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
         defaultValue: 0.0,
@@ -343,24 +347,17 @@ module.exports = {
       references: { table: 'users', field: 'id' },
     });
 
-    await queryInterface.addConstraint('group_transactions', {
-      fields: ['group_id'],
-      type: 'foreign key',
-      name: 'fk_group_transactions_group',
-      references: { table: 'groups', field: 'id' },
-    });
-
-    await queryInterface.addConstraint('group_transactions', {
+    await queryInterface.addConstraint('expense_transactions', {
       fields: ['user_id'],
       type: 'foreign key',
-      name: 'fk_group_transactions_user',
+      name: 'fk_expense_transactions_user',
       references: { table: 'users', field: 'id' },
     });
 
-    await queryInterface.addConstraint('group_transactions', {
+    await queryInterface.addConstraint('expense_transactions', {
       fields: ['expense_id'],
       type: 'foreign key',
-      name: 'fk_group_transactions_expenses',
+      name: 'fk_expense_transactions_expenses',
       references: { table: 'expenses', field: 'id' },
     });
 
@@ -446,7 +443,7 @@ module.exports = {
     await queryInterface.dropTable('recharge_funds_transactions');
     await queryInterface.dropTable('expenses_payments');
     await queryInterface.dropTable('expense_members');
-    await queryInterface.dropTable('group_transactions');
+    await queryInterface.dropTable('expense_transactions');
     await queryInterface.dropTable('expenses');
     await queryInterface.dropTable('open_finance_accounts');
     await queryInterface.dropTable('institutions');

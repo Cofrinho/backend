@@ -70,7 +70,7 @@ export class User extends Model {
     this.hasMany(models.GroupParticipant, { foreignKey: 'user_id' });
     this.hasOne(models.Account, { foreignKey: 'user_id' });
     this.hasMany(models.OpenFinanceAccount, { foreignKey: 'user_id' });
-    this.hasMany(models.GroupTransaction, { foreignKey: 'user_id' });
+    this.hasMany(models.ExpenseTransaction, { foreignKey: 'user_id' });
     this.hasMany(models.ExpenseMember, { foreignKey: 'user_id' });
     this.hasMany(models.ExpensePayment, { foreignKey: 'user_id' });
     this.hasMany(models.RechargeFundsTransaction, { foreignKey: 'user_id' });
