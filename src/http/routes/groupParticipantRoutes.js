@@ -12,6 +12,6 @@ router.delete('/:id', GroupParticipantController.delete);
 router.delete(
   '/group/:groupId/user/:userId',
   GroupParticipantController.deleteByGroupIdAndUserId,
-); // Rota adicional específica
+);
 
 export { router as groupParticipantRoutes };
