@@ -45,8 +45,6 @@ export default class AccountService {
     const rechargeTransactions = await RechargeFundTransactionRepository.findAllByUserId(userId);
     const expensesPayment = await ExpensePaymentRepository.findAllByUserId(userId);
 
-    console.log(expensesPayment);
-
     const expensesPaymentsMapped = expensesPayment.map(p => ({
       id: p.id,
       name: p.Expense.name,
