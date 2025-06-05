@@ -3,6 +3,10 @@ import { Group } from '../models/Group.js';
 import { ExpensePayment } from '../models/ExpensePayment.js';
 
 export default class ExpensePaymentRepository {
+  static async create(data) {
+    return ExpensePayment.create(data);
+  }
+
   static async findAllByUserId(userId){
     const expenses = await ExpensePayment.findAll({
       where: { user_id: userId},

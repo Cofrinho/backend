@@ -1,11 +1,13 @@
 import { ExpenseService } from '../../application/services/ExpenseService.js';
 import { ExpenseMemberService } from '../../application/services/ExpenseMemberService.js';
+import { ExpenseTransactionService } from '../../application/services/ExpenseTransactionService.js';
 import { createExpenseSchema } from '../../http/validations/expenseValidator.js';
 import { ZodError } from 'zod';
 import { CreateExpenseDTO } from '../../application/dtos/CreateExpenseDTO.js';
 
 const expenseService = new ExpenseService();
 const expenseMemberService = new ExpenseMemberService();
+const expenseTransactionService = new ExpenseTransactionService();
 
 const ExpenseController = {
   async getAllByGroup(req, res) {
@@ -50,10 +52,36 @@ const ExpenseController = {
   },
 
   async getMembers(req, res) {
-    const { id: groupId , expenseId} = req.params;
+    const { id: groupId, expenseId } = req.params;
     try {
-      const payments = await expenseMemberService.getMembersByExpense(groupId, expenseId);
+      const payments = await expenseMemberService.getMembersByExpense(
+        groupId,
+        expenseId,
+      );
       return res.status(200).json(payments);
+    } catch (error) {
+      res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  },
+
+  async createExpenseTransaction(req, res) {
+    const { expenseMemberId } = req.params;
+    try {
+      const expenseTransaction =
+        await expenseTransactionService.createExpenseTransaction(
+          expenseMemberId,
+        );
+      return res.status(200).json(expenseTransaction);
+    } catch (error) {
+      res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  },
+
+  async paymentsExpense(req, res) {
+    const { expenseId } = req.params;
+    try {
+      const expensePayment = await expenseService.paymentExpense(expenseId);
+      return res.status(200).json(expensePayment);
     } catch (error) {
       res.status(error.statusCode || 500).json({ error: error.message });
     }

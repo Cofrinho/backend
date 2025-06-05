@@ -50,7 +50,6 @@ export class Group extends Model {
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: 'group_owner', as: 'owner' });
     this.hasMany(models.GroupParticipant, { foreignKey: 'group_id' });
-    this.hasMany(models.GroupTransaction, { foreignKey: 'group_id' });
     this.hasMany(models.Expense, { foreignKey: 'group_id' });
   }
 }
