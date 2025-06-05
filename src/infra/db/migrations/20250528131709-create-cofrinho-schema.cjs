@@ -486,6 +486,7 @@ module.exports = {
   },
 
   async down(queryInterface) {
+    await queryInterface.dropTable('notifications');
     await queryInterface.dropTable('recharge_funds_transactions');
     await queryInterface.dropTable('expenses_payments');
     await queryInterface.dropTable('expense_members');
@@ -498,6 +499,5 @@ module.exports = {
     await queryInterface.dropTable('groups');
     await queryInterface.dropTable('password_reset_codes');
     await queryInterface.dropTable('users');
-    await queryInterface.dropTable('notifications');
   },
 };
