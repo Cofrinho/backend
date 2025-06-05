@@ -12,6 +12,7 @@ import { OpenFinanceAccount } from '../../domain/models/OpenFinanceAccount.js';
 import { RechargeFundsTransaction } from '../../domain/models/RechargeFundsTransaction.js';
 import { User } from '../../domain/models/User.js';
 import { PasswordResetCode } from '../../domain/models/PasswordResetCode.js';
+import { Notification } from '../../domain/models/Notification.js';
 
 const models = [
   Account,
@@ -26,6 +27,7 @@ const models = [
   RechargeFundsTransaction,
   PasswordResetCode,
   User,
+  Notification,
 ];
 
 class Database {
