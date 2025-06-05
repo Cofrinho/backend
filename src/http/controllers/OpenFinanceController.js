@@ -63,4 +63,36 @@ export default class OpenFinanceController {
       return res.status(error.statusCode || 500).json({ error: error.message });
     }
   }
+  static async getBalanceByInstitution(req, res) {
+    const user_id = req.params.userId;
+    const institution_id = req.params.institutionId;
+
+    try {
+      const balance = await OpenFinanceService.getBalanceByInstitution(
+        user_id,
+        institution_id,
+      );
+
+      return res.status(200).json({ balance });
+    } catch (error) {
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
+  static async createRecharge(req, res) {
+    const user_id = req.params.userId;
+    const institution_id = req.params.institutionId;
+    const { amount } = req.body;
+
+    try {
+      const recharge = await OpenFinanceService.createRecharge(
+        user_id,
+        institution_id,
+        amount,
+      );
+
+      return res.status(200).json(recharge);
+    } catch (error) {
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
 }

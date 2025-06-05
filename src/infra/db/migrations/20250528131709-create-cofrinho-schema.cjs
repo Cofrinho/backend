@@ -310,17 +310,12 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      value: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
+      amount: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
       user_id: { type: Sequelize.INTEGER, allowNull: false },
       institution_id: { type: Sequelize.INTEGER, allowNull: false },
       type: {
         type: Sequelize.TEXT,
         allowNull: false,
-      },
-      status: {
-        type: Sequelize.TEXT,
-        allowNull: false,
-        defaultValue: 'PENDING',
       },
       created_at: { type: Sequelize.DATE, allowNull: false },
       updated_at: { type: Sequelize.DATE, allowNull: false },

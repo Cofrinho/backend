@@ -1,0 +1,15 @@
+import AccountService from '../../application/services/AccountService.js';
+
+export default class AccountController {
+  static async getBalance(req, res) {
+    const user_id = req.params.userId;
+
+    try {
+      const balance = await AccountService.getBalance(user_id);
+
+      return res.status(200).json({ balance });
+    } catch (error) {
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
+}

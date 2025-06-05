@@ -1,9 +1,11 @@
 import OpenFinanceRepository from '../../domain/repositories/OpenFinanceRepository.js';
 import UserRepository from '../../domain/repositories/UserRepository.js';
 import InstitutionRepository from '../../domain/repositories/InstitutionRepository.js';
+import AccountService from './AccountService.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import axios from 'axios';
 import { CreateOpenFinanceAccountDTO } from '../dtos/CreateOpenFinanceAccountDTO.js';
+import { CreateRechargeFundsTransactionDTO } from '../dtos/CreateRechargeFundsTransactionDTO.js';
 
 export default class OpenFinanceService {
   static async createConsent(user_id, institution_id, date) {
@@ -39,8 +41,6 @@ export default class OpenFinanceService {
       authorization: true,
       ...(date && { expirationDate: date }),
     };
-
-    console.log(data);
 
     const url = `${institution.api_url}/openfinance`;
 
@@ -214,5 +214,136 @@ export default class OpenFinanceService {
       throw new AppError('No active consents found.', 400);
     }
     return consents;
+  }
+  static async getBalanceByInstitution(user_id, institution_id) {
+    const user = await UserRepository.findById(user_id);
+
+    if (!user) {
+      throw new AppError('User not found.', 400);
+    }
+
+    const institution =
+      await InstitutionRepository.findInstitutionById(institution_id);
+
+    if (!institution) {
+      throw new AppError('Institution not found.', 400);
+    }
+
+    const consent = await OpenFinanceRepository.findConsentExists(
+      user_id,
+      institution_id,
+    );
+
+    if (!consent) {
+      throw new AppError('Consent not found.', 400);
+    }
+
+    if (!consent.is_active) {
+      throw new AppError('Consent is not active.', 400);
+    }
+
+    const params = {
+      account: consent.account_number,
+      agency: consent.agency,
+    };
+
+    const url = `${institution.api_url}/openfinance`;
+
+    let response;
+
+    try {
+      response = await axios.get(url, { params });
+    } catch (error) {
+      if (error.response) {
+        throw new AppError(
+          error.response.data.error || 'Failed to fetch account balance.',
+          error.response.status,
+        );
+      } else if (error.request) {
+        throw new AppError('No response from institution.', 502);
+      } else {
+        throw new AppError('Unknown error while fetching balance.', 500);
+      }
+    }
+
+    if (!response.data.success) {
+      throw new AppError('Failed to fetch account balance.', 400);
+    }
+
+    const balance = response.data.data.balance;
+
+    return balance;
+  }
+  static async createRecharge(user_id, institution_id, amount) {
+    const user = await UserRepository.findById(user_id);
+
+    if (!user) {
+      throw new AppError('User not found.', 400);
+    }
+
+    const institution =
+      await InstitutionRepository.findInstitutionById(institution_id);
+
+    if (!institution) {
+      throw new AppError('Institution not found.', 400);
+    }
+
+    const consent = await OpenFinanceRepository.findConsentExists(
+      user_id,
+      institution_id,
+    );
+
+    if (!consent) {
+      throw new AppError('Consent not found.', 400);
+    }
+
+    if (!consent.is_active) {
+      throw new AppError('Consent is not active.', 400);
+    }
+
+    const data = {
+      account: consent.account_number,
+      agency: consent.agency,
+      amount,
+    };
+
+    const url = `${institution.api_url}/openfinance/transaction`;
+
+    let response;
+    try {
+      response = await axios.post(url, data);
+    } catch (error) {
+      if (error.response) {
+        throw new AppError(
+          error.response.data.error ||
+            'Failed to perform recharge transaction.',
+          error.response.status,
+        );
+      } else if (error.request) {
+        throw new AppError('No response from institution.', 502);
+      } else {
+        throw new AppError('Unknown error during recharge transaction.', 500);
+      }
+    }
+
+    if (!response.data.success) {
+      throw new AppError('Recharge transaction failed.', 400);
+    }
+
+    const createRechargeFundsTransactionDTO =
+      new CreateRechargeFundsTransactionDTO({
+        amount,
+        user_id,
+        institution_id,
+        type: 'OpenFinance',
+      });
+
+    const rechargeFundsTransaction = await OpenFinanceRepository.createRecharge(
+      createRechargeFundsTransactionDTO,
+    );
+
+    await AccountService.updateBalance(user_id, amount);
+
+    return rechargeFundsTransaction;
   }
 }

@@ -1,4 +1,5 @@
 import { OpenFinanceAccount } from '../models/OpenFinanceAccount.js';
+import { RechargeFundsTransaction } from '../models/RechargeFundsTransaction.js';
 
 export default class OpenFinanceRepository {
   static async create(createOpenFinanceAccountDTO) {
@@ -46,5 +47,10 @@ export default class OpenFinanceRepository {
     return await OpenFinanceAccount.findOne({
       where: { user_id, institution_id },
     });
+  }
+  static async createRecharge(createRechargeFundsTransactionDTO) {
+    return await RechargeFundsTransaction.create(
+      createRechargeFundsTransactionDTO,
+    );
   }
 }
