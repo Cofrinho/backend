@@ -3,6 +3,8 @@ import { ExpenseMemberRepository } from '../../domain/repositories/ExpenseMember
 import { ExpenseRepository } from '../../domain/repositories/ExpenseRepository.js';
 import AccountRepository from '../../domain/repositories/AccountRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
+import CreateNotificationDTO from '../dtos/CreateNotificationDTO.js';
+import NotificationService from './NotificationService.js';
 
 class ExpenseTransactionService {
   constructor() {
@@ -51,6 +53,14 @@ class ExpenseTransactionService {
     await AccountRepository.incrementBalance(data.user_id, -data.amount);
     await this.expenseMemberRepository.paid(expenseMemberId);
     await this.expenseRepository.updateBalance(data.expense_id, data.amount);
+
+    const createNotificationDTO = new CreateNotificationDTO({
+      user_id: expenseTransaction.user_id,
+      type: 'TRANSACTION',
+      reference_id: expenseTransaction.id,
+    });
+
+    await NotificationService.create(createNotificationDTO);
 
     return expenseTransaction;
   }

@@ -259,7 +259,7 @@ module.exports = {
     });
 
     await queryInterface.createTable('expense_members', {
-      id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true },
+      id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       expense_id: { type: Sequelize.INTEGER, allowNull: false },
       user_id: { type: Sequelize.INTEGER, allowNull: false },
       amount: {
@@ -327,8 +327,8 @@ module.exports = {
 
     await queryInterface.createTable('notifications', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
@@ -341,13 +341,13 @@ module.exports = {
         allowNull: false,
         defaultValue: false,
       },
-      recharge_id: {
-        type: Sequelize.UUID,
-        allowNull: true,
+      type: {
+        type: Sequelize.ENUM('TRANSACTION', 'RECHARGE', 'PAYMENT', 'EXPENSE'),
+        allowNull: false,
       },
-      expense_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
+      reference_id: {
+        type: Sequelize.TEXT,
+        allowNull: false,
       },
       created_at: { type: Sequelize.DATE, allowNull: false },
       updated_at: { type: Sequelize.DATE, allowNull: false },
@@ -470,18 +470,6 @@ module.exports = {
       fields: ['user_id'],
       type: 'foreign key',
       references: { table: 'users', field: 'id' },
-    });
-
-    await queryInterface.addConstraint('notifications', {
-      fields: ['recharge_id'],
-      type: 'foreign key',
-      references: { table: 'recharge_funds_transactions', field: 'id' },
-    });
-
-    await queryInterface.addConstraint('notifications', {
-      fields: ['expense_id'],
-      type: 'foreign key',
-      references: { table: 'expenses', field: 'id' },
     });
   },
 

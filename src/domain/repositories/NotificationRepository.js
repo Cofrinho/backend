@@ -16,13 +16,6 @@ export default class NotificationRepository {
     return await Notification.findByPk(id);
   }
 
-  static async update(id, notificationDTO) {
-    const [updatedRowsCount] = await Notification.update(notificationDTO, {
-      where: { id },
-    });
-    return updatedRowsCount > 0;
-  }
-
   static async markAsSeen(id) {
     const [updatedRowsCount] = await Notification.update(
       { seen: true },

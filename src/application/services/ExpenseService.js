@@ -4,6 +4,9 @@ import { AppError } from '../../shared/errors/AppError.js';
 import { ExpenseMemberService } from './ExpenseMemberService.js';
 import ExpensePaymentRepository from '../../domain/repositories/ExpensePaymentRepository.js';
 import GroupService from './GroupService.js';
+import CreateNotificationDTO from '../dtos/CreateNotificationDTO.js';
+import NotificationService from './NotificationService.js';
+
 class ExpenseService {
   constructor() {
     this.expenseRepository = new ExpenseRepository();
@@ -107,6 +110,14 @@ class ExpenseService {
 
     const expensePayment = await ExpensePaymentRepository.create(data);
     await this.expenseRepository.paid(expense.id);
+
+    const createNotificationDTO = new CreateNotificationDTO({
+      user_id: expensePayment.user_id,
+      type: 'PAYMENT',
+      reference_id: expensePayment.id,
+    });
+
+    await NotificationService.create(createNotificationDTO);
 
     return expensePayment;
   }

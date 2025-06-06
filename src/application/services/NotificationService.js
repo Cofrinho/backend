@@ -9,17 +9,11 @@ export default class NotificationService {
 
   static async getAllByUserId(userId) {
     const notifications = await NotificationRepository.findAllByUserId(userId);
-    if (!notifications || notifications.length === 0) {
-      throw new AppError('No notifications found for this user.', 404);
-    }
     return notifications;
   }
 
   static async getById(id) {
     const notification = await NotificationRepository.findById(id);
-    if (!notification) {
-      throw new AppError('Notification not found.', 404);
-    }
     return notification;
   }
 
