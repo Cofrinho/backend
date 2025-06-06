@@ -259,7 +259,7 @@ module.exports = {
     });
 
     await queryInterface.createTable('expense_members', {
-      id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true },
+      id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
       expense_id: { type: Sequelize.INTEGER, allowNull: false },
       user_id: { type: Sequelize.INTEGER, allowNull: false },
       amount: {
@@ -327,8 +327,8 @@ module.exports = {
 
     await queryInterface.createTable('notifications', {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.literal('gen_random_uuid()'),
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
@@ -342,11 +342,11 @@ module.exports = {
         defaultValue: false,
       },
       type: {
-        type: Sequelize.ENUM('TRANSACTION', 'RECHARGE', 'PAYMENT'),
+        type: Sequelize.ENUM('TRANSACTION', 'RECHARGE', 'PAYMENT', 'EXPENSE'),
         allowNull: false,
       },
       reference_id: {
-        type: Sequelize.UUID,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       created_at: { type: Sequelize.DATE, allowNull: false },
