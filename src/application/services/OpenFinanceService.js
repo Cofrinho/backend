@@ -6,6 +6,8 @@ import { AppError } from '../../shared/errors/AppError.js';
 import axios from 'axios';
 import { CreateOpenFinanceAccountDTO } from '../dtos/CreateOpenFinanceAccountDTO.js';
 import { CreateRechargeFundsTransactionDTO } from '../dtos/CreateRechargeFundsTransactionDTO.js';
+import NotificationService from './NotificationService.js';
+import CreateNotificationDTO from '../dtos/CreateNotificationDTO.js';
 
 export default class OpenFinanceService {
   static async createConsent(user_id, institution_id, date) {
@@ -343,6 +345,14 @@ export default class OpenFinanceService {
     );
 
     await AccountService.updateBalance(user_id, amount);
+
+    const createNotificationDTO = new CreateNotificationDTO({
+      user_id: rechargeFundsTransaction.user_id,
+      type: 'RECHARGE',
+      reference_id: rechargeFundsTransaction.id,
+    });
+
+    await NotificationService.create(createNotificationDTO);
 
     return rechargeFundsTransaction;
   }

@@ -1,4 +1,6 @@
 import { ExpenseMemberRepository } from '../../domain/repositories/ExpenseMemberRepository.js';
+import CreateNotificationDTO from '../dtos/CreateNotificationDTO.js';
+import NotificationService from './NotificationService.js';
 
 class ExpenseMemberService {
   constructor() {
@@ -13,6 +15,15 @@ class ExpenseMemberService {
     }));
 
     await this.expenseMemberRepository.createAll(participantsData);
+
+    for (const participant of participants) {
+      const createNotificationDTO = new CreateNotificationDTO({
+        user_id: participant.userId,
+        type: 'EXPENSE',
+        reference_id: expenseId,
+      });
+      await NotificationService.create(createNotificationDTO);
+    }
   }
 
   async getMembersByExpense(groupId, expenseId) {
