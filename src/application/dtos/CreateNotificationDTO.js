@@ -1,7 +1,7 @@
 export default class CreateNotificationDTO {
-  constructor({ user_id, recharge_id, expenseId }) {
+  constructor({ user_id, type, reference_id }) {
     this.user_id = user_id;
-    this.recharge_id = recharge_id;
-    this.expense_id = expenseId;
+    this.type = type;
+    this.reference_id = reference_id;
   }
 }
