@@ -11,25 +11,7 @@ export default class FetchOpenFinance {
         },
       });
 
-      return response.data.balance;
-    } catch (error) {
-      if (error.response) {
-        throw new AppError(
-          error.response.data.error || 'Failed to create consent.',
-          error.response.status,
-        );
-      } else if (error.request) {
-        throw new AppError('No response from institution.', 502);
-      } else {
-        throw new AppError('Unknown error while creating consent.', 500);
-      }
-    }
-  }
-
-  static async getLogoInstitution(url) {
-    try {
-      const response = await axios.get(url);
-      return response.data;
+      return parseFloat(response.data.data.balance);
     } catch (error) {
       if (error.response) {
         throw new AppError(

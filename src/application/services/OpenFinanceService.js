@@ -366,7 +366,7 @@ export default class OpenFinanceService {
 
     const balanceTotal = balances.reduce((acc, balance) => acc + balance, 0);
 
-    const logos = await Promise.all(accountsOpenFinance.map(account => FetchOpenFinance.getLogoInstitution(account.Institution.logo_url)));
+    const logos = await Promise.all(accountsOpenFinance.map(account => account.Institution.logo_url));
     return {
       balance: balanceTotal,
       logos
