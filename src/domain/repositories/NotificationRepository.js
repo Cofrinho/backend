@@ -30,4 +30,10 @@ export default class NotificationRepository {
     });
     return deletedRowsCount > 0;
   }
+
+  static async countByNotSeen(userId){
+    return await Notification.count({
+      where: { user_id: userId, seen: false },
+    });
+  }
 }

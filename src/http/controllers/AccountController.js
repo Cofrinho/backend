@@ -12,4 +12,14 @@ export default class AccountController {
       return res.status(error.statusCode || 500).json({ error: error.message });
     }
   }
+
+  static async getInfo(req, res){
+    const { userId } = req.params;
+    try{
+      const message = await AccountService.getInfo(userId);
+      return res.status(200).json(message);
+    }catch(error){
+      res.status(error.statusCode || 500).json({error: error.message});
+    }
+  }
 }

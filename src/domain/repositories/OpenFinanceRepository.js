@@ -1,3 +1,4 @@
+import { Institution } from '../models/Institution.js';
 import { OpenFinanceAccount } from '../models/OpenFinanceAccount.js';
 import { RechargeFundsTransaction } from '../models/RechargeFundsTransaction.js';
 
@@ -52,5 +53,16 @@ export default class OpenFinanceRepository {
     return await RechargeFundsTransaction.create(
       createRechargeFundsTransactionDTO,
     );
+  }
+  static async findAllAndInstitutions(user_id) {
+    return await OpenFinanceAccount.findAll({
+      where: { user_id, is_active: true },
+      include: [
+        {
+          model: Institution,
+          attributes: ['api_url', 'logo_url']
+        }
+      ]
+    });
   }
 }

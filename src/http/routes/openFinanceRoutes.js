@@ -20,4 +20,6 @@ router.post(
   OpenFinanceController.createRecharge,
 );
 
+router.get('/users/:userId/balance', OpenFinanceController.getHomeOpenFinance);
+
 export { router as openFinanceRoutes };

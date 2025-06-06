@@ -6,6 +6,7 @@ import { AppError } from '../../shared/errors/AppError.js';
 import axios from 'axios';
 import { CreateOpenFinanceAccountDTO } from '../dtos/CreateOpenFinanceAccountDTO.js';
 import { CreateRechargeFundsTransactionDTO } from '../dtos/CreateRechargeFundsTransactionDTO.js';
+import FetchOpenFinance  from '../../infra/external/FetchOpenFinance.js';
 import NotificationService from './NotificationService.js';
 import CreateNotificationDTO from '../dtos/CreateNotificationDTO.js';
 
@@ -345,7 +346,7 @@ export default class OpenFinanceService {
     );
 
     await AccountService.updateBalance(user_id, amount);
-
+    
     const createNotificationDTO = new CreateNotificationDTO({
       user_id: rechargeFundsTransaction.user_id,
       type: 'RECHARGE',
@@ -355,5 +356,30 @@ export default class OpenFinanceService {
     await NotificationService.create(createNotificationDTO);
 
     return rechargeFundsTransaction;
+  }
+
+  static async getHomeOpenFinance(userId){
+
+    if(!(await UserRepository.findById(userId))){
+      throw new AppError('User not found', 404);
+    }
+
+    const accountsOpenFinance = await OpenFinanceRepository.findAllAndInstitutions(userId);
+    if(accountsOpenFinance.length === 0){
+      throw new AppError('Account not found', 404);
+    }
+
+    const balances = await Promise.all(accountsOpenFinance.map(account => FetchOpenFinance.getBalanceAccount(account.Institution.api_url,
+      account.agency,
+      account.account_number
+    )));
+
+    const balanceTotal = balances.reduce((acc, balance) => acc + balance, 0);
+
+    const logos = await Promise.all(accountsOpenFinance.map(account => account.Institution.logo_url));
+    return {
+      balance: balanceTotal,
+      logos
+    }
   }
 }
