@@ -1,4 +1,6 @@
 import OpenFinanceService from '../../application/services/OpenFinanceService.js';
+import { paramsSchema } from '../validations/actionValidator.js';
+import { ZodError } from 'zod';
 
 export default class OpenFinanceController {
   static async createConsent(req, res) {
@@ -99,9 +101,16 @@ export default class OpenFinanceController {
   static async getHomeOpenFinance(req, res){
     const { userId } = req.params;
     try{
-      const data = await OpenFinanceService.getHomeOpenFinance(userId);
+      const { action } = paramsSchema.parse(req.params);
+      const data = await OpenFinanceService.getHomeOpenFinance(userId, action);
       res.status(200).json(data);
     }catch(error){
+      if (error instanceof ZodError) {
+        const formattedErrors = error.errors
+          .map((err) => err.message)
+          .join(', ');
+        return res.status(400).json({ error: formattedErrors });
+      }
       return res.status(error.statusCode || 500).json({ error: error.message });
     }
   }

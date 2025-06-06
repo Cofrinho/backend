@@ -348,7 +348,7 @@ export default class OpenFinanceService {
     return rechargeFundsTransaction;
   }
 
-  static async getHomeOpenFinance(userId){
+  static async getHomeOpenFinance(userId, action){
 
     if(!(await UserRepository.findById(userId))){
       throw new AppError('User not found', 404);
@@ -364,12 +364,25 @@ export default class OpenFinanceService {
       account.account_number
     )));
 
-    const balanceTotal = balances.reduce((acc, balance) => acc + balance, 0);
+    if(action === 'balance'){
 
-    const logos = await Promise.all(accountsOpenFinance.map(account => account.Institution.logo_url));
-    return {
-      balance: balanceTotal,
-      logos
+      const balanceTotal = balances.reduce((acc, balance) => acc + balance, 0);
+
+      const logos = await Promise.all(accountsOpenFinance.map(account => account.Institution.logo_url));
+      return {
+        balance: balanceTotal,
+        logos
+      }
+
+    }else{
+      const accounts = accountsOpenFinance.map((account, index) => ({
+        institutionName: account.Institution.name,
+        account: account.account_number,
+        agency: account.agency,
+        balance: balances[index]
+      }))
+
+      return accounts;
     }
   }
 }
