@@ -4,6 +4,8 @@ import RechargeFundTransactionRepository from '../../domain/repositories/Recharg
 import UserRepository from '../../domain/repositories/UserRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import ExpensePaymentRepository from '../../domain/repositories/ExpensePaymentRepository.js';
+import NotificationRepository from '../../domain/repositories/NotificationRepository.js';
+import { ExpenseTransactionRepository } from '../../domain/repositories/ExpenseTransactionRepository.js';
 
 
 export default class AccountService {
@@ -31,42 +33,59 @@ export default class AccountService {
     return await AccountRepository.getAccount(user_id);
   }
 
-  static async getInfo(userId){
-    if(!(await User.findByPk(userId))){
+  static async getInfo(userId) {
+    if (!(await User.findByPk(userId))) {
       throw new AppError('user not found', 404);
     }
 
     const account = await AccountRepository.getAccount(userId);
 
-    if(!account){
+    if (!account) {
       throw new AppError('account not found this user', 404);
     }
 
-    const rechargeTransactions = await RechargeFundTransactionRepository.findAllByUserId(userId);
-    const expensesPayment = await ExpensePaymentRepository.findAllByUserId(userId);
+    const expenseTransactionRepository = new ExpenseTransactionRepository();
 
-    const expensesPaymentsMapped = expensesPayment.map(p => ({
-      id: p.id,
-      name: p.Expense.name,
-      date: p.created_at,
-      group: `Grupo ${p.Expense.Group.id}`,
-      value: p.value,
-    }));
+    const [recharges, payments, transactions] = await Promise.all([
+      RechargeFundTransactionRepository.findLastByUserId(userId, 3),
+      ExpensePaymentRepository.findLastByUserId(userId, 3),
+      expenseTransactionRepository.findLastByUserId(userId, 3),
+    ]);
 
-    const rechargeTransactionsMapped = rechargeTransactions.map(t => ({
-      id: t.id,
-      value: t.amount,
-      title: 'Recarga Cofrinho',
-      date: t.created_at
-    }));
+    const mapTransaction = (t, type) => {
+      const base = {
+        id: t.id,
+        value: t.amount || t.value,
+        date: t.created_at,
+        type,
+      };
 
-    const allTransactions = [...rechargeTransactionsMapped, ...expensesPaymentsMapped];
+      if (type === 'recharge') {
+        return { ...base, title: 'Recarga Cofrinho' };
+      } else {
+        return {
+          ...base,
+          name: t.Expense.name,
+          group: `Grupo ${t.Expense.Group.id}`,
+        };
+      }
+    };
 
-    const lastTransactions = allTransactions.sort((a, b) => b.date - a.date).slice(0, 3);
+    const allTransactions = [
+      ...recharges.map((t) => mapTransaction(t, 'recharge')),
+      ...payments.map((t) => mapTransaction(t, 'payment')),
+      ...transactions.map((t) => mapTransaction(t, 'transaction')),
+    ]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 3);
+
+    const countNotifications =
+      await NotificationRepository.countByNotSeen(userId);
 
     return {
       balance: account.balance,
-      transactions: lastTransactions
-    }
+      notifications: countNotifications,
+      transactions: allTransactions,
+    };
   }
 }

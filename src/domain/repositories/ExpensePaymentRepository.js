@@ -7,7 +7,7 @@ export default class ExpensePaymentRepository {
     return ExpensePayment.create(data);
   }
 
-  static async findAllByUserId(userId){
+  static async findLastByUserId(userId, limit = 3){
     const expenses = await ExpensePayment.findAll({
       where: { user_id: userId},
       attributes: ['id','value', 'expense_id', 'created_at'],
@@ -21,7 +21,8 @@ export default class ExpensePaymentRepository {
           }]
         }
       ],
-      order: [['created_at', 'DESC']]
+      order: [['created_at', 'DESC']],
+      limit
     });
 
     return expenses;
