@@ -95,4 +95,14 @@ export default class OpenFinanceController {
       return res.status(error.statusCode || 500).json({ error: error.message });
     }
   }
+
+  static async getHomeOpenFinance(req, res){
+    const { userId } = req.params;
+    try{
+      const data = await OpenFinanceService.getHomeOpenFinance(userId);
+      res.status(200).json(data);
+    }catch(error){
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
 }
