@@ -5,8 +5,8 @@ export class Notification extends Model {
     return super.init(
       {
         id: {
-          type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV4,
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
           primaryKey: true,
           allowNull: false,
         },
@@ -20,11 +20,11 @@ export class Notification extends Model {
           defaultValue: false,
         },
         type: {
-          type: DataTypes.ENUM('TRANSACTION', 'RECHARGE', 'PAYMENT'),
+          type: DataTypes.ENUM('TRANSACTION', 'RECHARGE', 'PAYMENT', 'EXPENSE'),
           allowNull: false,
         },
         reference_id: {
-          type: DataTypes.UUID,
+          type: DataTypes.TEXT,
           allowNull: false,
         },
       },

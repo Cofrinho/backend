@@ -40,7 +40,9 @@ export default class NotificationController {
 
   static async markAsSeen(req, res) {
     try {
-      const validatedData = markAsSeenSchema.parse({ id: req.params.id });
+      const validatedData = markAsSeenSchema.parse({
+        id: Number(req.params.id),
+      });
       const result = await NotificationService.markAsSeen(validatedData.id);
       return res.status(200).json(result);
     } catch (error) {
