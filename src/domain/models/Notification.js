@@ -19,13 +19,13 @@ export class Notification extends Model {
           allowNull: false,
           defaultValue: false,
         },
-        recharge_id: {
-          type: DataTypes.UUID,
-          allowNull: true,
+        type: {
+          type: DataTypes.ENUM('TRANSACTION', 'RECHARGE', 'PAYMENT'),
+          allowNull: false,
         },
-        expense_id: {
-          type: DataTypes.INTEGER,
-          allowNull: true,
+        reference_id: {
+          type: DataTypes.UUID,
+          allowNull: false,
         },
       },
       {
@@ -43,14 +43,6 @@ export class Notification extends Model {
     this.belongsTo(models.User, {
       foreignKey: 'user_id',
       as: 'user',
-    });
-    this.belongsTo(models.RechargeFundsTransaction, {
-      foreignKey: 'recharge_id',
-      as: 'recharge',
-    });
-    this.belongsTo(models.Expense, {
-      foreignKey: 'expense_id',
-      as: 'expense',
     });
   }
 }
