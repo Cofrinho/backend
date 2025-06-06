@@ -5,7 +5,7 @@ export class ExpenseMember extends Model {
     return super.init(
       {
         id: {
-          type: DataTypes.BIGINT,
+          type: DataTypes.INTEGER,
           autoIncrement: true,
           primaryKey: true,
           allowNull: false,
