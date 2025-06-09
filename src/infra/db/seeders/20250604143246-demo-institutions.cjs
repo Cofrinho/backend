@@ -12,7 +12,7 @@ module.exports = {
       {
         name: 'Santander',
         api_url: 'https://bank-account-aggregator.onrender.com',
-        logo_url: 'https://bank-account-aggregator.onrender.com/santander-logo.ng',
+        logo_url: 'https://bank-account-aggregator.onrender.com/santander-logo.png',
         color: '#EC0000'
       }
     ]);
