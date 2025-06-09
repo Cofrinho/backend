@@ -9,6 +9,12 @@ module.exports = {
         logo_url: 'https://apiopenfinancenubank.onrender.com/logo-nubank.png',
         color: '#A020F0',
       },
+      {
+        name: 'Santander',
+        api_url: 'https://bank-account-aggregator.onrender.com',
+        logo_url: 'https://bank-account-aggregator.onrender.com/santander-logo.ng',
+        color: '#EC0000'
+      }
     ]);
   },
 

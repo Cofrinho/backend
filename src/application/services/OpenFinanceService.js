@@ -346,7 +346,7 @@ export default class OpenFinanceService {
     );
 
     await AccountService.updateBalance(user_id, amount);
-    
+
     const createNotificationDTO = new CreateNotificationDTO({
       user_id: rechargeFundsTransaction.user_id,
       type: 'RECHARGE',
