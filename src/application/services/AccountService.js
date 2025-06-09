@@ -44,12 +44,25 @@ export default class AccountService {
       throw new AppError('account not found this user', 404);
     }
 
+    const allTransactions = await this.getAllTransactions(userId, 3);
+
+    const countNotifications =
+      await NotificationRepository.countByNotSeen(userId);
+
+    return {
+      balance: account.balance,
+      notifications: countNotifications,
+      transactions: allTransactions,
+    };
+  }
+
+  static async getAllTransactions(userId, limit = 4){
     const expenseTransactionRepository = new ExpenseTransactionRepository();
 
     const [recharges, payments, transactions] = await Promise.all([
-      RechargeFundTransactionRepository.findLastByUserId(userId, 3),
-      ExpensePaymentRepository.findLastByUserId(userId, 3),
-      expenseTransactionRepository.findLastByUserId(userId, 3),
+      RechargeFundTransactionRepository.findLastByUserId(userId, limit),
+      ExpensePaymentRepository.findLastByUserId(userId, limit),
+      expenseTransactionRepository.findLastByUserId(userId, limit),
     ]);
 
     const mapTransaction = (t, type) => {
@@ -78,14 +91,6 @@ export default class AccountService {
     ]
       .sort((a, b) => new Date(b.date) - new Date(a.date))
       .slice(0, 3);
-
-    const countNotifications =
-      await NotificationRepository.countByNotSeen(userId);
-
-    return {
-      balance: account.balance,
-      notifications: countNotifications,
-      transactions: allTransactions,
-    };
+      return allTransactions;
   }
 }

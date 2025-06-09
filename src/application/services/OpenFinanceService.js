@@ -374,9 +374,9 @@ export default class OpenFinanceService {
       account.account_number
     )));
 
-    if(action === 'balance'){
+    const balanceTotal = balances.reduce((acc, balance) => acc + balance, 0);
 
-      const balanceTotal = balances.reduce((acc, balance) => acc + balance, 0);
+    if(action === 'balance'){
 
       const logos = await Promise.all(accountsOpenFinance.map(account => account.Institution.logo_url));
       return {
@@ -387,12 +387,16 @@ export default class OpenFinanceService {
     }else{
       const accounts = accountsOpenFinance.map((account, index) => ({
         institutionName: account.Institution.name,
+        logo_url: account.Institution.logo_url,
         account: account.account_number,
         agency: account.agency,
         balance: balances[index]
       }))
 
-      return accounts;
+      return {
+        balanceTotal: balanceTotal,
+        accounts: accounts
+      };
     }
   }
 }
