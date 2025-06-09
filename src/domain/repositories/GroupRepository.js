@@ -43,6 +43,15 @@ export default class GroupRepository {
     });
   }
 
+  static async findAllByIds(ids) {
+    return await Group.findAll({
+      where: {
+        id: { [Op.in]: ids },
+        deactivated_at: null,
+      },
+    });
+  }
+
   static async update(groupDTO) {
     const { id, ...dataToUpdate } = groupDTO;
 

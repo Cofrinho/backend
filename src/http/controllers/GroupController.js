@@ -45,6 +45,15 @@ export default class GroupController {
     }
   }
 
+  static async getByUserId(req, res) {
+    try {
+      const groups = await GroupService.getByUserId(req.params.userId);
+      return res.status(200).json(groups);
+    } catch (error) {
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
+
   static async getByAccessCode(req, res) {
     try {
       const group = await GroupService.getByAccessCode(req.params.accessCode);
