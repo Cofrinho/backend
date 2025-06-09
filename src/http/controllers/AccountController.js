@@ -2,7 +2,7 @@ import AccountService from '../../application/services/AccountService.js';
 
 export default class AccountController {
   static async getBalance(req, res) {
-    const user_id = req.params.userId;
+    const user_id = req.user.id;
 
     try {
       const balance = await AccountService.getBalance(user_id);
@@ -14,7 +14,7 @@ export default class AccountController {
   }
 
   static async getInfo(req, res){
-    const { userId } = req.params;
+    const userId = req.user.id;
     try{
       const message = await AccountService.getInfo(userId);
       return res.status(200).json(message);
@@ -25,7 +25,7 @@ export default class AccountController {
 
   static async getAllTransactions(req, res){
 
-    const { userId } = req.params;
+    const userId = req.user.id;
     const { limit } = req.query;
 
     try{

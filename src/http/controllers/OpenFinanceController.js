@@ -99,7 +99,7 @@ export default class OpenFinanceController {
   }
 
   static async getHomeOpenFinance(req, res){
-    const { userId } = req.params;
+    const userId  = req.user.id;
     try{
       const { action } = paramsSchema.parse(req.params);
       const data = await OpenFinanceService.getHomeOpenFinance(userId, action);
