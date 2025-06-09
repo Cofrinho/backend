@@ -17,6 +17,7 @@ router.post(
 router.post('/expenses/:expenseId/payments', ExpenseController.paymentsExpense);
 
 router.get('/:id', GroupController.getById);
+router.get('/user/:userId', GroupController.getByUserId);
 router.get('/access/:accessCode', GroupController.getByAccessCode);
 router.post('/', GroupController.create);
 router.patch('/:id', GroupController.update);

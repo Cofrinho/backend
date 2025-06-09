@@ -33,6 +33,24 @@ export default class GroupParticipantRepository {
     });
   }
 
+  static async findByUserId(userId) {
+    return await GroupParticipant.findAll({
+      where: {
+        user_id: userId,
+        deactivated_at: null,
+      },
+    });
+  }
+
+  static async findByGroupIds(groupIds) {
+    return await GroupParticipant.findAll({
+      where: {
+        group_id: { [Op.in]: groupIds },
+        deactivated_at: null,
+      },
+    });
+  }
+
   static async findAll() {
     return await GroupParticipant.findAll({
       where: { deactivated_at: null },

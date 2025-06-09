@@ -1,4 +1,6 @@
 import GroupRepository from '../../domain/repositories/GroupRepository.js';
+import GroupParticipantRepository from '../../domain/repositories/GroupParticipantRepository.js';
+import UserRepository from '../../domain/repositories/UserRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import CreateGroupDTO from '../dtos/CreateGroupDTO.js';
 import UpdateGroupDTO from '../dtos/UpdateGroupDTO.js';
@@ -76,6 +78,60 @@ export default class GroupService {
       throw new AppError('No group found with this ID.', 404);
     }
     return group;
+  }
+
+  static async getByUserId(userId) {
+    const userParticipations =
+      await GroupParticipantRepository.findByUserId(userId);
+
+    if (!userParticipations) {
+      throw new AppError('User is not participating in any groups.', 404);
+    }
+
+    const groupIds = userParticipations.map(
+      (participation) => participation.group_id,
+    );
+
+    const groups = await GroupRepository.findAllByIds(groupIds);
+    const groupParticipants =
+      await GroupParticipantRepository.findByGroupIds(groupIds);
+
+    const participantUserIds = [
+      ...new Set(groupParticipants.map((participant) => participant.user_id)),
+    ];
+    const participantUsers = await UserRepository.findByIds(participantUserIds);
+
+    return groups.map((group) => {
+      const participantsInGroup = groupParticipants
+        .filter((participant) => participant.group_id === group.id)
+        .map((participant) => {
+          const user = participantUsers.find(
+            (u) => u.id === participant.user_id,
+          );
+          return {
+            participant: {
+              id: user.id,
+              name: user.name,
+              avatar_url: user.avatar_url,
+              joinedAt: user.updatedAt,
+            },
+          };
+        });
+
+      return {
+        group: {
+          id: group.id,
+          access_code: group.access_code,
+          name: group.name,
+          description: group.description,
+          image_url: group.image_url,
+          group_owner: group.group_owner,
+          balance: group.balance,
+          createdAt: group.createdAt,
+        },
+        participants: participantsInGroup,
+      };
+    });
   }
 
   static async getByAccessCode(accessCode) {

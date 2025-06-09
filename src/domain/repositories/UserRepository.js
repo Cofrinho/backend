@@ -56,6 +56,15 @@ export default class UserRepository {
     });
   }
 
+  static async findByIds(ids) {
+    return await User.findAll({
+      where: {
+        id: { [Op.in]: ids },
+        deactivated_at: null,
+      },
+    });
+  }
+
   static async update(userDTO) {
     const { id, ...dataToUpdate } = userDTO;
 
