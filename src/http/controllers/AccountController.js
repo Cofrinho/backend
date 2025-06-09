@@ -22,4 +22,17 @@ export default class AccountController {
       res.status(error.statusCode || 500).json({error: error.message});
     }
   }
+
+  static async getAllTransactions(req, res){
+
+    const { userId } = req.params;
+    const { limit } = req.query;
+
+    try{
+      const transactions = await AccountService.getAllTransactions(userId, limit);
+      return res.status(200).json(transactions);
+    }catch(error){
+      return res.status(error.statusCode || 500).json({error: error.message});
+    }
+  }
 }
