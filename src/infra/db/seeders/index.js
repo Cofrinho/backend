@@ -5,22 +5,52 @@ import seedGroupParticipants from './20250603130640-demo-group-participant.cjs';
 import seedAccounts from './20250604143311-demo-accounts.cjs';
 import seedInstitutions from './20250604143246-demo-institutions.cjs';
 
-async function runAllSeeds() {
+const allSeeds = [
+  seedUsers,
+  seedInstitutions,
+  seedAccounts,
+  seedGroups,
+  seedGroupParticipants,
+];
+
+const reverseSeeds = [...allSeeds].reverse();
+
+async function runSeeds() {
   const queryInterface = Database.getQueryInterface();
 
   try {
-    await seedUsers.up(queryInterface);
-    await seedAccounts.up(queryInterface);
-    await seedGroups.up(queryInterface);
-    await seedGroupParticipants.up(queryInterface);
-    await seedInstitutions.up(queryInterface);
-
-    console.log('All seeds executed successfully!');
-  } catch (error) {
-    console.error('Error running seeds:', error);
-  } finally {
+    for (const seed of allSeeds) {
+      await seed.up(queryInterface);
+      console.log(`Seed ${seed.name || seed.toString()} executed`);
+    }
+    console.log('All seeds executed successfully');
     process.exit(0);
+  } catch (error) {
+    console.error('Seed error:', error);
+    process.exit(1);
   }
 }
 
-runAllSeeds();
+async function undoSeeds() {
+  const queryInterface = Database.getQueryInterface();
+
+  try {
+    for (const seed of reverseSeeds) {
+      await seed.down(queryInterface);
+      console.log(`Seed ${seed.name || seed.toString()} reverted`);
+    }
+    console.log('All seeds reverted successfully');
+    process.exit(0);
+  } catch (error) {
+    console.error('Seed revert error:', error);
+    process.exit(1);
+  }
+}
+
+const command = process.argv[2];
+
+if (command === '--undo' || command === '-u') {
+  undoSeeds();
+} else {
+  runSeeds();
+}
