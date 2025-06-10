@@ -1,8 +1,10 @@
+import { errorSchemas } from './errorSchemas.js';
+
 export const usersDoc = {
   tags: [
     {
       name: 'Users',
-      description: 'Endpoints para gerenciamento de usuários',
+      description: 'Endpoints for user management',
     },
   ],
   components: {
@@ -18,98 +20,132 @@ export const usersDoc = {
         type: 'object',
         properties: {
           id: { type: 'integer', example: 1 },
-          name: { type: 'string', example: 'Andrei Albrecht' },
-          email: { type: 'string', example: 'andrei@example.com' },
-          cpf: { type: 'string', example: '12345678900' },
-          birth_date: { type: 'string', format: 'date', example: '1990-01-01' },
-          phone: { type: 'string', example: '+5511999999999' },
-          avatar_url: {
-            type: 'string',
-            example: 'http://example.com/avatar.jpg',
-          },
-          createdAt: {
-            type: 'string',
-            format: 'date-time',
-            example: '2025-06-10T15:00:00Z',
-          },
-          updatedAt: {
-            type: 'string',
-            format: 'date-time',
-            example: '2025-06-10T15:00:00Z',
-          },
-        },
-      },
-      CreateUserDTO: {
-        type: 'object',
-        required: ['name', 'email', 'password', 'cpf', 'birth_date', 'phone'],
-        properties: {
-          name: { type: 'string', example: 'Andrei Albrecht' },
+          name: { type: 'string', example: 'José Mourinho' },
+          cpf: { type: 'string', example: '123.456.789-00' },
+          birth_date: { type: 'string', format: 'date', example: '2002-08-10' },
           email: {
             type: 'string',
             format: 'email',
             example: 'andrei@example.com',
           },
+          phone: { type: 'string', example: '(55) 99999-9999' },
+          password_hash: {
+            type: 'string',
+            description: 'Encrypted password',
+            example: '$2b$10$...',
+          },
+          avatar_url: {
+            type: 'string',
+            format: 'uri',
+            nullable: true,
+            example: 'https://example.com/avatar.png',
+          },
+          email_verified_at: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            example: '2025-06-10T14:00:00Z',
+          },
+          last_login_at: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            example: '2025-06-10T14:00:00Z',
+          },
+          deactivated_at: {
+            type: 'string',
+            format: 'date-time',
+            nullable: true,
+            example: null,
+          },
+          created_at: {
+            type: 'string',
+            format: 'date-time',
+            example: '2025-06-01T12:00:00Z',
+          },
+          updated_at: {
+            type: 'string',
+            format: 'date-time',
+            example: '2025-06-10T12:00:00Z',
+          },
+        },
+        required: [
+          'id',
+          'name',
+          'cpf',
+          'birth_date',
+          'email',
+          'phone',
+          'password_hash',
+          'created_at',
+          'updated_at',
+        ],
+      },
+      CreateUserDTO: {
+        type: 'object',
+        required: ['name', 'cpf', 'birth_date', 'email', 'phone', 'password'],
+        properties: {
+          name: { type: 'string', example: 'José Mourinho' },
+          cpf: { type: 'string', example: '123.456.789-00' },
+          birth_date: { type: 'string', format: 'date', example: '2002-08-10' },
+          email: {
+            type: 'string',
+            format: 'email',
+            example: 'andrei@example.com',
+          },
+          phone: { type: 'string', example: '(55) 99999-9999' },
           password: {
             type: 'string',
             format: 'password',
-            example: 'strongPassword123',
+            example: 'minhasenha123',
           },
-          cpf: { type: 'string', example: '12345678900' },
-          birth_date: { type: 'string', format: 'date', example: '1990-01-01' },
-          phone: { type: 'string', example: '+5511999999999' },
         },
       },
       UpdateUserDTO: {
         type: 'object',
         properties: {
-          name: { type: 'string', example: 'Andrei Albrecht' },
+          id: { type: 'integer', example: 1 },
+          name: { type: 'string', example: 'José Atualizado' },
+          cpf: { type: 'string', example: '987.654.321-00' },
+          birth_date: { type: 'string', format: 'date', example: '2002-08-10' },
           email: {
             type: 'string',
             format: 'email',
-            example: 'andrei_new@example.com',
+            example: 'jose.updated@example.com',
+          },
+          phone: { type: 'string', example: '(55) 98888-8888' },
+          avatar_url: {
+            type: 'string',
+            format: 'uri',
+            example: 'https://example.com/avatar-novo.png',
           },
           password: {
             type: 'string',
             format: 'password',
-            example: 'currentPassword123',
+            description: 'Current password for authentication',
+            example: 'senhaAtual123',
           },
           new_password: {
             type: 'string',
             format: 'password',
-            example: 'newStrongPassword123',
-          },
-          cpf: { type: 'string', example: '12345678900' },
-          birth_date: { type: 'string', format: 'date', example: '1990-01-01' },
-          phone: { type: 'string', example: '+5511999999999' },
-        },
-      },
-    },
-    responses: {
-      UnauthorizedError: {
-        description: 'Token JWT inválido ou ausente',
-        content: {
-          'application/json': {
-            schema: {
-              type: 'object',
-              properties: {
-                error: { type: 'string', example: 'Unauthorized' },
-              },
-            },
+            description: 'New password (optional)',
+            example: 'novaSenha456',
           },
         },
       },
+      ...errorSchemas,
     },
   },
 
   paths: {
     '/users': {
       get: {
-        summary: 'Retorna todos os usuários',
+        summary: 'Get all users',
         tags: ['Users'],
         security: [{ bearerAuth: [] }],
         responses: {
           200: {
-            description: 'Lista de usuários',
+            description: 'List of users',
             content: {
               'application/json': {
                 schema: {
@@ -119,28 +155,38 @@ export const usersDoc = {
               },
             },
           },
-          401: { $ref: '#/components/responses/UnauthorizedError' },
           404: {
-            description: 'Nenhum usuário encontrado',
+            description: 'No users found',
             content: {
               'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    error: { type: 'string', example: 'No users found.' },
-                  },
-                },
+                schema: { $ref: '#/components/schemas/NotFoundError' },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/UnauthorizedError' },
+              },
+            },
+          },
+          500: {
+            description: 'Internal server error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/InternalServerError' },
               },
             },
           },
         },
       },
       post: {
-        summary: 'Cria um novo usuário',
+        summary: 'Create a new user',
         tags: ['Users'],
         security: [{ bearerAuth: [] }],
         requestBody: {
-          description: 'Dados do usuário para criação',
+          description: 'User data for creation',
           required: true,
           content: {
             'application/json': {
@@ -150,99 +196,107 @@ export const usersDoc = {
         },
         responses: {
           201: {
-            description: 'Usuário criado com sucesso',
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    message: {
-                      type: 'string',
-                      example: 'User reactivated and updated successfully.',
-                    },
-                    id: { type: 'integer', example: 1 },
-                    name: { type: 'string', example: 'Andrei Albrecht' },
-                    email: { type: 'string', example: 'andrei@example.com' },
-                  },
-                },
-              },
-            },
-          },
-          400: {
-            description: 'Erro de validação ou dados duplicados',
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    error: {
-                      type: 'string',
-                      example: 'Email already registered.',
-                    },
-                  },
-                },
-              },
-            },
-          },
-          401: { $ref: '#/components/responses/UnauthorizedError' },
-        },
-      },
-    },
-
-    '/users/{id}': {
-      get: {
-        summary: 'Retorna um usuário pelo ID',
-        tags: ['Users'],
-        security: [{ bearerAuth: [] }],
-        parameters: [
-          {
-            in: 'path',
-            name: 'id',
-            description: 'ID do usuário',
-            required: true,
-            schema: { type: 'integer', example: 1 },
-          },
-        ],
-        responses: {
-          200: {
-            description: 'Usuário encontrado',
+            description: 'User created successfully',
             content: {
               'application/json': {
                 schema: { $ref: '#/components/schemas/User' },
               },
             },
           },
-          401: { $ref: '#/components/responses/UnauthorizedError' },
-          404: {
-            description: 'Usuário não encontrado',
+          400: {
+            description: 'Bad request',
             content: {
               'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    error: { type: 'string', example: 'No user found.' },
-                  },
-                },
+                schema: { $ref: '#/components/schemas/BadRequestError' },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/UnauthorizedError' },
+              },
+            },
+          },
+          500: {
+            description: 'Internal server error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/InternalServerError' },
               },
             },
           },
         },
       },
-      patch: {
-        summary: 'Atualiza um usuário existente',
+    },
+
+    '/users/{id}': {
+      get: {
+        summary: 'Get user by ID',
         tags: ['Users'],
         security: [{ bearerAuth: [] }],
         parameters: [
           {
             in: 'path',
             name: 'id',
-            description: 'ID do usuário a ser atualizado',
+            description: 'User ID',
+            required: true,
+            schema: { type: 'integer', example: 1 },
+          },
+        ],
+        responses: {
+          200: {
+            description: 'User found',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/User' },
+              },
+            },
+          },
+
+          401: {
+            description: 'Unauthorized - authentication required',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/UnauthorizedError' },
+              },
+            },
+          },
+          404: {
+            description: 'Not found - user does not exist',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/NotFoundError' },
+              },
+            },
+          },
+          500: {
+            description: 'Internal server error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/InternalServerError' },
+              },
+            },
+          },
+        },
+      },
+
+      patch: {
+        summary: 'Update existing user',
+        tags: ['Users'],
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: 'path',
+            name: 'id',
+            description: 'User ID to update',
             required: true,
             schema: { type: 'integer', example: 1 },
           },
         ],
         requestBody: {
-          description: 'Dados para atualização do usuário',
+          description: 'User data to update',
           required: true,
           content: {
             'application/json': {
@@ -252,7 +306,7 @@ export const usersDoc = {
         },
         responses: {
           200: {
-            description: 'Usuário atualizado com sucesso',
+            description: 'User updated successfully',
             content: {
               'application/json': {
                 schema: {
@@ -268,53 +322,56 @@ export const usersDoc = {
             },
           },
           400: {
-            description: 'Erro de validação ou dados inválidos',
+            description: 'Bad request - validation error or invalid data',
             content: {
               'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    error: {
-                      type: 'string',
-                      example: 'No data provided to update.',
-                    },
-                  },
-                },
+                schema: { $ref: '#/components/schemas/BadRequestError' },
               },
             },
           },
-          401: { $ref: '#/components/responses/UnauthorizedError' },
-          404: {
-            description: 'Usuário não encontrado',
+          401: {
+            description: 'Unauthorized - authentication required',
             content: {
               'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    error: { type: 'string', example: 'No user found.' },
-                  },
-                },
+                schema: { $ref: '#/components/schemas/UnauthorizedError' },
+              },
+            },
+          },
+          404: {
+            description: 'Not found - user does not exist',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/NotFoundError' },
+              },
+            },
+          },
+          500: {
+            description: 'Internal server error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/InternalServerError' },
               },
             },
           },
         },
       },
+
       delete: {
-        summary: 'Desativa (soft delete) um usuário',
+        summary: 'Soft delete user (deactivate)',
         tags: ['Users'],
         security: [{ bearerAuth: [] }],
         parameters: [
           {
             in: 'path',
             name: 'id',
-            description: 'ID do usuário a ser desativado',
+            description: 'User ID to deactivate',
             required: true,
             schema: { type: 'integer', example: 1 },
           },
         ],
         responses: {
           200: {
-            description: 'Usuário desativado com sucesso',
+            description: 'User successfully deactivated',
             content: {
               'application/json': {
                 schema: {
@@ -330,32 +387,34 @@ export const usersDoc = {
             },
           },
           400: {
-            description: 'Erro ao desativar usuário',
+            description: 'Bad request - failed to deactivate user',
             content: {
               'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    error: {
-                      type: 'string',
-                      example: 'Unable to deactivate user.',
-                    },
-                  },
-                },
+                schema: { $ref: '#/components/schemas/BadRequestError' },
               },
             },
           },
-          401: { $ref: '#/components/responses/UnauthorizedError' },
-          404: {
-            description: 'Usuário não encontrado',
+          401: {
+            description: 'Unauthorized - authentication required',
             content: {
               'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    error: { type: 'string', example: 'No user found.' },
-                  },
-                },
+                schema: { $ref: '#/components/schemas/UnauthorizedError' },
+              },
+            },
+          },
+          404: {
+            description: 'Not found - user does not exist',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/NotFoundError' },
+              },
+            },
+          },
+          500: {
+            description: 'Internal server error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/InternalServerError' },
               },
             },
           },
