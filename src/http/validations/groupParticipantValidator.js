@@ -11,6 +11,20 @@ export const createGroupParticipantSchema = z.object({
   }),
 });
 
+export const createParticipantByAccessCodeSchema = z.object({
+  access_code: z
+    .string({
+      required_error: 'Access Code is required.',
+      invalid_type_error: 'Access Code must be a string.',
+    })
+    .length(4, { message: 'Access code must contain exactly 4 characters.' }),
+
+  user_id: z.number({
+    required_error: 'User ID is required.',
+    invalid_type_error: 'User ID must be a number.',
+  }),
+});
+
 export const updateGroupParticipantSchema = z.object({
   id: z.number({
     required_error: 'Participant ID is required.',
