@@ -78,7 +78,7 @@ module.exports = {
       name: { type: Sequelize.TEXT, allowNull: false },
       description: { type: Sequelize.TEXT },
       group_owner: { type: Sequelize.INTEGER, allowNull: false },
-      image_url: { type: Sequelize.TEXT },
+      image_url: { type: Sequelize.TEXT, allowNull: true },
       balance: {
         type: Sequelize.DECIMAL(10, 2),
         defaultValue: 0.0,

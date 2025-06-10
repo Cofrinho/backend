@@ -26,7 +26,7 @@ export class Group extends Model {
         },
         image_url: {
           type: DataTypes.TEXT,
-          allowNull: false,
+          allowNull: true,
         },
         group_owner: {
           type: DataTypes.INTEGER,
