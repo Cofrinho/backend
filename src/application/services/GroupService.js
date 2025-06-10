@@ -4,6 +4,7 @@ import UserRepository from '../../domain/repositories/UserRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import CreateGroupDTO from '../dtos/CreateGroupDTO.js';
 import UpdateGroupDTO from '../dtos/UpdateGroupDTO.js';
+import GroupParticipantDTO from '../dtos/GroupParticipantDTO.js';
 import generateRandomCode from '../../shared/utils/generateRandomCode.js';
 
 export default class GroupService {
@@ -61,6 +62,13 @@ export default class GroupService {
 
     const createDTO = new CreateGroupDTO({ ...groupDTO, access_code });
     const group = await GroupRepository.create(createDTO);
+
+    const createGroupParticipantDTO = new GroupParticipantDTO({
+      group_id: group.id,
+      user_id: group.group_owner,
+    });
+    await GroupParticipantRepository.create(createGroupParticipantDTO);
+
     return group;
   }
 
