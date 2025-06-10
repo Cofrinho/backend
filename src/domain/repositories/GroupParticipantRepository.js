@@ -89,4 +89,17 @@ export default class GroupParticipantRepository {
     );
     return updatedRowsCount > 0;
   }
+
+  static async softDeleteByGroupId(groupId) {
+    const [updatedRowsCount] = await GroupParticipant.update(
+      { deactivated_at: new Date() },
+      {
+        where: {
+          group_id: groupId,
+          deactivated_at: null,
+        },
+      },
+    );
+    return updatedRowsCount > 0;
+  }
 }
