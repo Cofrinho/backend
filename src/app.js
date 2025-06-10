@@ -1,5 +1,5 @@
 import express from 'express';
-import { setupSwagger } from '../swagger.js';
+import { setupSwagger } from './swagger/swagger.js';
 import { userRoutes } from './http/routes/userRoutes.js';
 import { groupRoutes } from './http/routes/groupRoutes.js';
 import { groupParticipantRoutes } from './http/routes/groupParticipantRoutes.js';
@@ -11,7 +11,9 @@ import { accountRoutes } from './http/routes/accountRoutes.js';
 import { notificationRoutes } from './http/routes/notificationRoutes.js';
 
 const app = express();
+
 app.use(express.json());
+
 setupSwagger(app);
 
 app.get('/', async (req, res) => {

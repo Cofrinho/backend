@@ -1,5 +1,6 @@
-import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+
+import { usersDoc } from './users.swagger.js';
 
 const swaggerDefinition = {
   openapi: '3.0.0',
@@ -14,14 +15,30 @@ const swaggerDefinition = {
       description: 'Servidor de desenvolvimento',
     },
   ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
+  security: [{ bearerAuth: [] }],
 };
 
-const options = {
-  swaggerDefinition,
-  apis: ['./src/http/routes/**/*.js'],
+const swaggerSpec = {
+  ...swaggerDefinition,
+  paths: {
+    ...usersDoc.paths,
+  },
+  components: {
+    ...swaggerDefinition.components,
+    schemas: {
+      ...(usersDoc.components?.schemas || {}),
+    },
+  },
 };
-
-const swaggerSpec = swaggerJSDoc(options);
 
 export function setupSwagger(app) {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
