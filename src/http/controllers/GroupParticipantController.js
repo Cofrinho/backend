@@ -3,6 +3,7 @@ import GroupParticipantDTO from '../../application/dtos/GroupParticipantDTO.js';
 import {
   createGroupParticipantSchema,
   updateGroupParticipantSchema,
+  createParticipantByAccessCodeSchema,
 } from '../validations/groupParticipantValidator.js';
 import { ZodError } from 'zod';
 
@@ -14,6 +15,30 @@ export default class GroupParticipantController {
       const validatedData = createGroupParticipantSchema.parse(createData);
       const createDTO = new GroupParticipantDTO(validatedData);
       const result = await GroupParticipantService.create(createDTO);
+      return res.status(201).json(result);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const formattedErrors = error.errors
+          .map((err) => err.message)
+          .join(', ');
+        return res.status(400).json({ error: formattedErrors });
+      }
+      return res.status(error.statusCode || 500).json({ error: error.message });
+    }
+  }
+
+  static async createByAccessCode(req, res) {
+    const userId = req.user.id;
+    const accessCode = req.params.accessCode;
+
+    try {
+      const validatedData = createParticipantByAccessCodeSchema.parse({
+        access_code: accessCode,
+        user_id: userId,
+      });
+
+      const result =
+        await GroupParticipantService.createByAccessCode(validatedData);
       return res.status(201).json(result);
     } catch (error) {
       if (error instanceof ZodError) {

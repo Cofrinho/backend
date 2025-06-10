@@ -4,6 +4,10 @@ import GroupParticipantController from '../controllers/GroupParticipantControlle
 const router = new Router();
 
 router.post('/', GroupParticipantController.create);
+router.post(
+  '/access-code/:accessCode',
+  GroupParticipantController.createByAccessCode,
+);
 router.get('/group/:groupId', GroupParticipantController.getAllByGroupId);
 router.get('/user/:userId', GroupParticipantController.getAllByUserId);
 router.get('/:id', GroupParticipantController.getById);

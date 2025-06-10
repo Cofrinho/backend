@@ -3,6 +3,7 @@ import GroupRepository from '../../domain/repositories/GroupRepository.js';
 import UserRepository from '../../domain/repositories/UserRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import GroupParticipantDTO from '../dtos/GroupParticipantDTO.js';
+import CreateGroupParticipantDTO from '../dtos/CreateGroupParticipantDTO.js';
 
 export default class GroupParticipantService {
   static async create(participantDTO) {
@@ -57,6 +58,22 @@ export default class GroupParticipantService {
     const createDTO = new GroupParticipantDTO({ group_id, user_id });
     const participant = await GroupParticipantRepository.create(createDTO);
     return participant;
+  }
+
+  static async createByAccessCode(data) {
+    const { access_code, user_id } = data;
+
+    const group = await GroupRepository.findByAccessCode(access_code);
+    if (!group) {
+      throw new AppError('Invalid access code.', 404);
+    }
+
+    const participantDTO = new CreateGroupParticipantDTO({
+      group_id: group.id,
+      user_id,
+    });
+
+    return this.create(participantDTO);
   }
 
   static async getAllByGroupId(groupId) {
