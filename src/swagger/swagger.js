@@ -1,6 +1,10 @@
 import swaggerUi from 'swagger-ui-express';
 
-import { usersDoc } from './users.swagger.js';
+import { usersSwagger } from './users.swagger.js';
+import { authSwagger } from './auth.swagger.js';
+import { institutionsSwagger } from './institutions.swagger.js';
+import { notificationsSwagger } from './notifications.swagger.js';
+import { openFinanceSwagger } from './openFinance.swagger.js';
 
 const swaggerDefinition = {
   openapi: '3.0.0',
@@ -15,27 +19,25 @@ const swaggerDefinition = {
       description: 'Servidor de desenvolvimento',
     },
   ],
-  components: {
-    securitySchemes: {
-      bearerAuth: {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-      },
-    },
-  },
-  security: [{ bearerAuth: [] }],
 };
 
 const swaggerSpec = {
   ...swaggerDefinition,
   paths: {
-    ...usersDoc.paths,
+    ...usersSwagger.paths,
+    ...authSwagger.paths,
+    ...institutionsSwagger.paths,
+    ...notificationsSwagger.paths,
+    ...openFinanceSwagger.paths,
   },
   components: {
     ...swaggerDefinition.components,
     schemas: {
-      ...(usersDoc.components?.schemas || {}),
+      ...(usersSwagger.components?.schemas || {}),
+      ...(authSwagger.components?.schemas || {}),
+      ...(institutionsSwagger.components?.schemas || {}),
+      ...(notificationsSwagger.components?.schemas || {}),
+      ...(openFinanceSwagger.components?.schemas || {}),
     },
   },
 };

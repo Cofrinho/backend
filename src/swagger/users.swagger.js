@@ -1,6 +1,6 @@
 import { errorSchemas } from './errorSchemas.js';
 
-export const usersDoc = {
+export const usersSwagger = {
   tags: [
     {
       name: 'Users',
