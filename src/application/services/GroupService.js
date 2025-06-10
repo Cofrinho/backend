@@ -1,6 +1,7 @@
 import GroupRepository from '../../domain/repositories/GroupRepository.js';
 import GroupParticipantRepository from '../../domain/repositories/GroupParticipantRepository.js';
 import UserRepository from '../../domain/repositories/UserRepository.js';
+import { ExpenseRepository } from '../../domain/repositories/ExpenseRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import CreateGroupDTO from '../dtos/CreateGroupDTO.js';
 import UpdateGroupDTO from '../dtos/UpdateGroupDTO.js';
@@ -85,7 +86,41 @@ export default class GroupService {
     if (!group) {
       throw new AppError('No group found with this ID.', 404);
     }
-    return group;
+
+    const groupParticipants = await GroupParticipantRepository.findByGroupIds([
+      id,
+    ]);
+
+    const participantUserIds = groupParticipants.map((p) => p.user_id);
+    const participantUsers = await UserRepository.findByIds(participantUserIds);
+
+    const participants = groupParticipants.map((participant) => {
+      const user = participantUsers.find((u) => u.id === participant.user_id);
+      return {
+        participant: {
+          id: user.id,
+          name: user.name,
+          avatar_url: user.avatar_url,
+          joinedAt: participant.updatedAt,
+        },
+      };
+    });
+
+    const expenseRepository = new ExpenseRepository();
+    const expenses = await expenseRepository.findAllByGroup(id);
+
+    return {
+      id: group.id,
+      access_code: group.access_code,
+      name: group.name,
+      description: group.description,
+      image_url: group.image_url,
+      group_owner: group.group_owner,
+      balance: group.balance,
+      createdAt: group.createdAt,
+      participants,
+      expenses,
+    };
   }
 
   static async getByUserId(userId) {
@@ -192,6 +227,9 @@ export default class GroupService {
     if (!deleted) {
       throw new AppError('Unable to deactivate group.', 400);
     }
-    return { message: 'Group successfully deactivated.' };
+
+    await GroupParticipantRepository.softDeleteByGroupId(id);
+
+    return { message: 'Group and its participants successfully deactivated.' };
   }
 }
