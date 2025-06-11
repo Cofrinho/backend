@@ -372,7 +372,7 @@ export const authSwagger = {
           required: true,
           content: {
             'application/json': {
-              schema: { $ref: '#/components/schemas/VerifyEmailDTO' },
+              schema: { $ref: '#/components/schemas/VerifyEmail' },
             },
           },
         },

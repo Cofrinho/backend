@@ -7,6 +7,8 @@ import { notificationsSwagger } from './notifications.swagger.js';
 import { openFinanceSwagger } from './openFinance.swagger.js';
 import { accountSwagger } from './accounts.swagger.js';
 import { groupParticipantSwagger } from './groupParticipant.swagger.js';
+import { groupsSwagger } from './groups.swagger.js';
+import { expensesSwagger } from './expenses.swagger.js';
 
 const swaggerDefinition = {
   openapi: '3.0.0',
@@ -33,6 +35,8 @@ const swaggerSpec = {
     ...openFinanceSwagger.paths,
     ...accountSwagger.paths,
     ...groupParticipantSwagger.paths,
+    ...groupsSwagger.paths,
+    ...expensesSwagger.paths,
   },
   components: {
     ...swaggerDefinition.components,
@@ -44,6 +48,8 @@ const swaggerSpec = {
       ...(openFinanceSwagger.components?.schemas || {}),
       ...(accountSwagger.components?.schemas || {}),
       ...(groupParticipantSwagger.components?.schemas || {}),
+      ...(groupsSwagger.components?.schemas || {}),
+      ...(expensesSwagger.components?.schemas || {}),
     },
   },
 };

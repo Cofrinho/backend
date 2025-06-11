@@ -51,9 +51,21 @@ export const accountSwagger = {
         properties: {
           id: { type: 'integer', example: 123 },
           value: { type: 'number', example: 50.0 },
-          date: { type: 'string', format: 'date-time', example: '2025-06-10T14:00:00Z' },
-          type: { type: 'string', enum: ['recharge', 'payment', 'transaction'], example: 'recharge' },
-          title: { type: 'string', nullable: true, example: 'Recarga Cofrinho' },
+          date: {
+            type: 'string',
+            format: 'date-time',
+            example: '2025-06-10T14:00:00Z',
+          },
+          type: {
+            type: 'string',
+            enum: ['recharge', 'payment', 'transaction'],
+            example: 'recharge',
+          },
+          title: {
+            type: 'string',
+            nullable: true,
+            example: 'Recarga Cofrinho',
+          },
           name: { type: 'string', nullable: true, example: 'Conta de Luz' },
           group: { type: 'string', nullable: true, example: 'Grupo 5' },
         },
@@ -86,7 +98,7 @@ export const accountSwagger = {
   },
 
   paths: {
-    'accounts/users/balance': {
+    '/accounts/users/balance': {
       get: {
         summary: 'Get the balance of the authenticated user',
         tags: ['Accounts'],
@@ -128,9 +140,10 @@ export const accountSwagger = {
       },
     },
 
-    'accounts/home': {
+    '/accounts/home': {
       get: {
-        summary: 'Get account info including balance, notifications and recent transactions',
+        summary:
+          'Get account info including balance, notifications and recent transactions',
         tags: ['Accounts'],
         security: [{ bearerAuth: [] }],
         responses: {
@@ -170,7 +183,7 @@ export const accountSwagger = {
       },
     },
 
-    'accounts/users/transactions': {
+    '/accounts/users/transactions': {
       get: {
         summary: 'Get all transactions for the authenticated user',
         tags: ['Accounts'],
