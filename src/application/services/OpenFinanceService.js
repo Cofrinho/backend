@@ -390,7 +390,9 @@ export default class OpenFinanceService {
         logo_url: account.Institution.logo_url,
         account: account.account_number,
         agency: account.agency,
-        balance: balances[index]
+        balance: balances[index],
+        expirationDate: account.expired_at ? account.expired_at : null,
+        startDate: account.createdAt
       }))
 
       return {
