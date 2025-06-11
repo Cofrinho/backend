@@ -66,6 +66,15 @@ export default class GroupParticipantRepository {
     });
   }
 
+  static async findActiveById(groupId) {
+    return await GroupParticipant.findAll({
+      where: {
+        group_id: groupId,
+        deactivated_at: null,
+      },
+    });
+  }
+
   static async update(groupParticipantDTO) {
     const { id, ...dataToUpdate } = groupParticipantDTO;
 

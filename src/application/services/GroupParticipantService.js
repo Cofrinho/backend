@@ -82,13 +82,26 @@ export default class GroupParticipantService {
       throw new AppError('Group not found.', 404);
     }
 
-    const allParticipants = await GroupParticipantRepository.findAll();
-    const participants = allParticipants.filter((p) => p.group_id == groupId);
+    const participants =
+      await GroupParticipantRepository.findActiveById(groupId);
 
     if (participants.length === 0) {
       throw new AppError('No participants found for this group.', 404);
     }
-    return participants;
+
+    const userIds = participants.map((p) => p.user_id);
+    const users = await UserRepository.findByIds(userIds);
+
+    return participants.map((participant) => {
+      const user = users.find((u) => u.id === participant.user_id);
+      return {
+        id: user.id,
+        name: user.name,
+        avatar: user.avatar_url,
+        joinedAt: participant.updatedAt,
+        isGroupOwner: user.id === groupExists.group_owner,
+      };
+    });
   }
 
   static async getAllByUserId(userId) {
