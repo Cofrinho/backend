@@ -2,6 +2,7 @@ import UserRepository from '../../domain/repositories/UserRepository.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import { hashPassword, checkPasswordHash } from '../../shared/utils/hash.js';
 import { ReactivateUserDTO } from '../dtos/ReactivateUserDTO.js';
+import UserDTO from '../dtos/UserDTO.js';
 import { generateEmailVerificationToken } from '../../shared/utils/jwt.js';
 import { EmailService } from '../../shared/utils/mailer.js';
 
@@ -82,7 +83,8 @@ export default class UserService {
     if (!user) {
       throw new AppError('No user found.', 404);
     }
-    return user;
+    const userDTO = new UserDTO(user);
+    return userDTO;
   }
 
   static async update(userDTO) {
