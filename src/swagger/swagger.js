@@ -6,7 +6,7 @@ import { institutionsSwagger } from './institutions.swagger.js';
 import { notificationsSwagger } from './notifications.swagger.js';
 import { openFinanceSwagger } from './openFinance.swagger.js';
 import { accountSwagger } from './accounts.swagger.js';
-import { groupParticipantSwagger } from './groupParticipant.swagger.js';
+import { groupParticipantsSwagger } from './groupParticipant.swagger.js';
 
 const swaggerDefinition = {
   openapi: '3.0.0',
@@ -32,7 +32,7 @@ const swaggerSpec = {
     ...notificationsSwagger.paths,
     ...openFinanceSwagger.paths,
     ...accountSwagger.paths,
-    ...groupParticipantSwagger.paths,
+    ...groupParticipantsSwagger.paths,
   },
   components: {
     ...swaggerDefinition.components,
@@ -43,7 +43,7 @@ const swaggerSpec = {
       ...(notificationsSwagger.components?.schemas || {}),
       ...(openFinanceSwagger.components?.schemas || {}),
       ...(accountSwagger.components?.schemas || {}),
-      ...(groupParticipantSwagger.components?.schemas || {}),
+      ...(groupParticipantsSwagger.components?.schemas || {}),
     },
   },
 };
