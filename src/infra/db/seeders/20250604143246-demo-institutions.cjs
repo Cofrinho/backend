@@ -22,6 +22,12 @@ module.exports = {
         logo_url: 'https://banco-central-simulator.onrender.com/logo.png',
         color: '#FC6800',
       },
+      {
+        name: 'Itau',
+        api_url: 'https://api-itau-banking.onrender.com',
+        logo_url: 'https://api-itau-banking.onrender.com/logo_itau.jpg',
+        color: '#FF6A00',
+      },
     ]);
   },
 
