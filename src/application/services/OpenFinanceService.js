@@ -6,7 +6,7 @@ import { AppError } from '../../shared/errors/AppError.js';
 import axios from 'axios';
 import { CreateOpenFinanceAccountDTO } from '../dtos/CreateOpenFinanceAccountDTO.js';
 import { CreateRechargeFundsTransactionDTO } from '../dtos/CreateRechargeFundsTransactionDTO.js';
-import FetchOpenFinance  from '../../infra/external/FetchOpenFinance.js';
+import FetchOpenFinance from '../../infra/external/FetchOpenFinance.js';
 import NotificationService from './NotificationService.js';
 import CreateNotificationDTO from '../dtos/CreateNotificationDTO.js';
 
@@ -358,46 +358,52 @@ export default class OpenFinanceService {
     return rechargeFundsTransaction;
   }
 
-  static async getHomeOpenFinance(userId, action){
-
-    if(!(await UserRepository.findById(userId))){
+  static async getHomeOpenFinance(userId, action) {
+    if (!(await UserRepository.findById(userId))) {
       throw new AppError('User not found', 404);
     }
 
-    const accountsOpenFinance = await OpenFinanceRepository.findAllAndInstitutions(userId);
-    if(accountsOpenFinance.length === 0){
+    const accountsOpenFinance =
+      await OpenFinanceRepository.findAllAndInstitutions(userId);
+    if (accountsOpenFinance.length === 0) {
       throw new AppError('Account not found', 404);
     }
 
-    const balances = await Promise.all(accountsOpenFinance.map(account => FetchOpenFinance.getBalanceAccount(account.Institution.api_url,
-      account.agency,
-      account.account_number
-    )));
+    const balances = await Promise.all(
+      accountsOpenFinance.map((account) =>
+        FetchOpenFinance.getBalanceAccount(
+          account.Institution.api_url,
+          account.agency,
+          account.account_number,
+        ),
+      ),
+    );
 
     const balanceTotal = balances.reduce((acc, balance) => acc + balance, 0);
 
-    if(action === 'balance'){
-
-      const logos = await Promise.all(accountsOpenFinance.map(account => account.Institution.logo_url));
+    if (action === 'balance') {
+      const logos = await Promise.all(
+        accountsOpenFinance.map((account) => account.Institution.logo_url),
+      );
       return {
         balance: balanceTotal,
-        logos
-      }
-
-    }else{
+        logos,
+      };
+    } else {
       const accounts = accountsOpenFinance.map((account, index) => ({
+        institutionId: account.Institution.id,
         institutionName: account.Institution.name,
         logo_url: account.Institution.logo_url,
         account: account.account_number,
         agency: account.agency,
         balance: balances[index],
         expirationDate: account.expired_at ? account.expired_at : null,
-        startDate: account.createdAt
-      }))
+        startDate: account.createdAt,
+      }));
 
       return {
         balanceTotal: balanceTotal,
-        accounts: accounts
+        accounts: accounts,
       };
     }
   }

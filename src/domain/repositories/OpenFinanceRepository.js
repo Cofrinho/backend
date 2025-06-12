@@ -60,9 +60,9 @@ export default class OpenFinanceRepository {
       include: [
         {
           model: Institution,
-          attributes: ['api_url', 'logo_url', 'name']
-        }
-      ]
+          attributes: ['id', 'api_url', 'logo_url', 'name'],
+        },
+      ],
     });
   }
 }
