@@ -33,6 +33,36 @@ module.exports = {
         description: 'Despesas do projeto da empresa',
         group_owner: 5,
       },
+      {
+        access_code: 'GR78',
+        name: 'Futebol de Sexta',
+        description: 'Grupo do Futebol',
+        group_owner: 11,
+      },
+      {
+        access_code: 'IU12',
+        name: 'Eurotrip',
+        description: 'Viagem para a Europa',
+        group_owner: 12,
+      },
+      {
+        access_code: '984G',
+        name: 'Manutenção do Carro',
+        description: 'Vaquinha para pagar o carro do Ruan',
+        group_owner: 13,
+      },
+      {
+        access_code: '87TR',
+        name: 'Chat GPT',
+        description: 'Dividir conta GPT',
+        group_owner: 14,
+      },
+      {
+        access_code: '2J6L',
+        name: 'AWS ECS',
+        description: 'Despesas do projeto da empresa',
+        group_owner: 15,
+      },
     ]);
   },
 

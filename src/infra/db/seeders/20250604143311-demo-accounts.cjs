@@ -43,6 +43,26 @@ module.exports = {
         user_id: 10,
         balance: 0.0,
       },
+      {
+        user_id: 11,
+        balance: 0.0,
+      },
+      {
+        user_id: 12,
+        balance: 0.0,
+      },
+      {
+        user_id: 13,
+        balance: 0.0,
+      },
+      {
+        user_id: 14,
+        balance: 0.0,
+      },
+      {
+        user_id: 15,
+        balance: 0.0,
+      },
     ]);
   },
 

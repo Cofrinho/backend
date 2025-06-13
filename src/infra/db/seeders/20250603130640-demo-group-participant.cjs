@@ -84,6 +84,111 @@ module.exports = {
         group_id: 5,
         user_id: 7,
       },
+
+      {
+        group_id: 6,
+        user_id: 11,
+      },
+      {
+        group_id: 6,
+        user_id: 12,
+      },
+      {
+        group_id: 6,
+        user_id: 13,
+      },
+      {
+        group_id: 6,
+        user_id: 14,
+      },
+      {
+        group_id: 6,
+        user_id: 15,
+      },
+
+      {
+        group_id: 7,
+        user_id: 11,
+      },
+      {
+        group_id: 7,
+        user_id: 12,
+      },
+      {
+        group_id: 7,
+        user_id: 13,
+      },
+      {
+        group_id: 7,
+        user_id: 14,
+      },
+      {
+        group_id: 7,
+        user_id: 15,
+      },
+
+      {
+        group_id: 8,
+        user_id: 11,
+      },
+      {
+        group_id: 8,
+        user_id: 12,
+      },
+      {
+        group_id: 8,
+        user_id: 13,
+      },
+      {
+        group_id: 8,
+        user_id: 14,
+      },
+      {
+        group_id: 8,
+        user_id: 15,
+      },
+
+      {
+        group_id: 9,
+        user_id: 11,
+      },
+      {
+        group_id: 9,
+        user_id: 12,
+      },
+      {
+        group_id: 9,
+        user_id: 13,
+      },
+      {
+        group_id: 9,
+        user_id: 14,
+      },
+      {
+        group_id: 9,
+        user_id: 15,
+      },
+
+      {
+        group_id: 10,
+        user_id: 11,
+      },
+      {
+        group_id: 10,
+        user_id: 12,
+      },
+      {
+        group_id: 10,
+        user_id: 13,
+      },
+      {
+        group_id: 10,
+        user_id: 14,
+      },
+      {
+        group_id: 10,
+        user_id: 15,
+      },
     ]);
   },
 
