@@ -17,6 +17,8 @@ export default class NotificationService {
       const base = {
         id: t.id,
         date: t.created_at,
+        type: t.type,
+        seen: t.seen,
       };
 
       if (t.type === 'RECHARGE') {

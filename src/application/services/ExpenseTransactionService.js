@@ -20,7 +20,7 @@ class ExpenseTransactionService {
       );
 
     if (expenseMember.status === 'PAID') {
-      throw new AppError(`You ve already paid this expense.`, 404);
+      throw new AppError(`You ve already paid this expense.`, 400);
     }
 
     if (!expenseMember) {
