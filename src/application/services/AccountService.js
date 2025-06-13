@@ -7,7 +7,6 @@ import ExpensePaymentRepository from '../../domain/repositories/ExpensePaymentRe
 import NotificationRepository from '../../domain/repositories/NotificationRepository.js';
 import { ExpenseTransactionRepository } from '../../domain/repositories/ExpenseTransactionRepository.js';
 
-
 export default class AccountService {
   static async getBalance(user_id) {
     const user = await UserRepository.findById(user_id);
@@ -56,7 +55,7 @@ export default class AccountService {
     };
   }
 
-  static async getAllTransactions(userId, limit = 4){
+  static async getAllTransactions(userId, limit = 4) {
     const expenseTransactionRepository = new ExpenseTransactionRepository();
 
     const [recharges, payments, transactions] = await Promise.all([
@@ -66,11 +65,13 @@ export default class AccountService {
     ]);
 
     const mapTransaction = (t, type) => {
+      const transactionType = type === 'recharge' ? 'in' : type;
+
       const base = {
         id: t.id,
         value: t.amount || t.value,
         date: t.created_at,
-        type,
+        type: transactionType,
       };
 
       if (type === 'recharge') {
@@ -78,7 +79,7 @@ export default class AccountService {
       } else {
         return {
           ...base,
-          name: t.Expense.name,
+          title: t.Expense.name,
           group: `Grupo ${t.Expense.Group.id}`,
         };
       }
@@ -90,7 +91,7 @@ export default class AccountService {
       ...transactions.map((t) => mapTransaction(t, 'transaction')),
     ]
       .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 3);
-      return allTransactions;
+      .slice(0, limit);
+    return allTransactions;
   }
 }

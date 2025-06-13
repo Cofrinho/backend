@@ -12,9 +12,16 @@ class ExpenseTransactionService {
     this.expenseMemberRepository = new ExpenseMemberRepository();
     this.expenseRepository = new ExpenseRepository();
   }
-  async createExpenseTransaction(expenseMemberId) {
+  async createExpenseTransaction(expenseId, userId) {
     const expenseMember =
-      await this.expenseMemberRepository.findById(expenseMemberId);
+      await this.expenseMemberRepository.findByExpenseIdAndUserId(
+        expenseId,
+        userId,
+      );
+
+    if (expenseMember.status === 'PAID') {
+      throw new AppError(`You ve already paid this expense.`, 404);
+    }
 
     if (!expenseMember) {
       throw new AppError('Expense member not found.', 404);
@@ -51,7 +58,7 @@ class ExpenseTransactionService {
       await this.expenseTransactionRepository.create(data);
 
     await AccountRepository.incrementBalance(data.user_id, -data.amount);
-    await this.expenseMemberRepository.paid(expenseMemberId);
+    await this.expenseMemberRepository.paid(expenseMember.id);
     await this.expenseRepository.updateBalance(data.expense_id, data.amount);
 
     const createNotificationDTO = new CreateNotificationDTO({

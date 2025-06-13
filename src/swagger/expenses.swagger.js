@@ -435,7 +435,7 @@ export const expensesSwagger = {
       },
     },
 
-    '/groups/expenseMembers/{expenseMemberId}/transactions': {
+    '/groups/expenses/:expenseId/transactions': {
       post: {
         summary: 'Create a transaction for an expense member',
         tags: ['Expenses'],
