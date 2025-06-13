@@ -5,7 +5,7 @@ class ExpenseRepository {
   async findAllByGroup(groupId) {
     const expenses = await Expense.findAll({
       where: { group_id: groupId },
-      attributes: ['name', 'value', 'balance'],
+      attributes: ['id', 'name', 'value', 'balance'],
     });
     return expenses;
   }
