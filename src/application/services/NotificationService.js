@@ -16,53 +16,62 @@ export default class NotificationService {
     const mapNotifications = async (t) => {
       const base = {
         id: t.id,
-        date: t.created_at
-      }
+        date: t.created_at,
+      };
 
-      if(t.type === 'RECHARGE'){
-        const recharge = await RechargeFundTransactionRepository.findById(t.reference_id);
-        
+      if (t.type === 'RECHARGE') {
+        const recharge = await RechargeFundTransactionRepository.findById(
+          t.reference_id,
+        );
+
         return {
           ...base,
           title: 'Recarga Cofrinho',
-          value: recharge.amount
-        }
+          value: recharge.amount,
+        };
       }
 
-      if(t.type === 'PAYMENT'){
-        const payment =  await ExpensePaymentRepository.findById(t.reference_id);
+      if (t.type === 'PAYMENT') {
+        const payment = await ExpensePaymentRepository.findById(t.reference_id);
         return {
           ...base,
           title: payment.Expense.name,
           value: payment.value,
-          group: `Grupo ${payment.Expense.Group.id}`
-        }
+          group: `Grupo ${payment.Expense.Group.id}`,
+        };
       }
 
-      if(t.type === 'EXPENSE'){
+      if (t.type === 'EXPENSE') {
         const expenseRepository = new ExpenseRepository();
-        const expense = await expenseRepository.findByIdAndGroupId(t.reference_id);
+        const expense = await expenseRepository.findByIdAndGroupId(
+          t.reference_id,
+        );
         return {
           ...base,
           title: expense.name,
           value: expense.value,
           description: expense.description,
-          group: `Grupo ${expense.Group.id}`
-        }
+          group: `Grupo ${expense.Group.id}`,
+        };
       }
 
-      if(t.type === 'TRANSACTION'){
-        const transaction = await ExpenseTransactionRepository.findById(t.reference_id);
+      if (t.type === 'TRANSACTION') {
+        const expenseTransactionRepository = new ExpenseTransactionRepository();
+        const transaction = await expenseTransactionRepository.findById(
+          t.reference_id,
+        );
         return {
           ...base,
           title: transaction.Expense.name,
           value: transaction.amount,
           description: transaction.description,
-          group: `Grupo ${transaction.Expense.Group.id}`
-        }
+          group: `Grupo ${transaction.Expense.Group.id}`,
+        };
       }
-    }
-    const result = await Promise.all(notifications.map((t) => mapNotifications(t)));
+    };
+    const result = await Promise.all(
+      notifications.map((t) => mapNotifications(t)),
+    );
     return result;
   }
 
