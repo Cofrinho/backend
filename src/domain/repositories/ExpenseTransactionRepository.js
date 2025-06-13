@@ -6,26 +6,30 @@ class ExpenseTransactionRepository {
   async create(data) {
     return await ExpenseTransaction.create(data);
   }
-  async findLastByUserId(user_id, limit = 3){
+  async findLastByUserId(user_id, limit = 3) {
     const expenses = await ExpenseTransaction.findAll({
       where: { user_id },
-      attributes: ['id','amount', 'created_at', 'description'],
-      include: [{
-        model: Expense,
-        attributes: ['name'],
-        include: [{
-          model: Group,
-          attributes: ['id']
-      }]
-    }],
+      attributes: ['id', 'amount', 'created_at', 'description'],
+      include: [
+        {
+          model: Expense,
+          attributes: ['name'],
+          include: [
+            {
+              model: Group,
+              attributes: ['id'],
+            },
+          ],
+        },
+      ],
       order: [['created_at', 'DESC']],
-      limit
-    })
+      limit,
+    });
 
     return expenses;
   }
 
-  async findById(id){
+  async findById(id) {
     return await ExpenseTransaction.findByPk(id, {
       include: [
         {
@@ -34,12 +38,20 @@ class ExpenseTransactionRepository {
           include: [
             {
               model: Group,
-              attributes: ['id']
-            }
-          ]
-        }
-      ]
-    })
+              attributes: ['id'],
+            },
+          ],
+        },
+      ],
+    });
+  }
+
+  async findAllPaidByExpenseId(expenseId) {
+    return await ExpenseTransaction.findAll({
+      where: {
+        expense_id: expenseId,
+      },
+    });
   }
 }
 
