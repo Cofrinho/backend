@@ -14,6 +14,7 @@ class ExpenseRepository {
     const expense = await Expense.findOne({
       where: { id, group_id: groupId },
       attributes: [
+        'id',
         'name',
         'description',
         'status',
