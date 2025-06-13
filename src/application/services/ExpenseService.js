@@ -45,7 +45,7 @@ class ExpenseService {
     const expenseMembers =
       await this.expenseTransactionRepository.findAllPaidByExpenseId(id);
     return {
-      expense,
+      ...expense,
       members: expenseMembers,
     };
   }
