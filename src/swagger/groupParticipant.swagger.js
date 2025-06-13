@@ -8,7 +8,7 @@ export const groupParticipantsSwagger = {
     },
   ],
   paths: {
-    '/group-participants': {
+    '/participants': {
       post: {
         tags: ['GroupParticipants'],
         summary: 'Adicionar usuário a um grupo (criação ou reativação)',
@@ -31,9 +31,9 @@ export const groupParticipantsSwagger = {
                     id: { type: 'integer', example: 10 },
                     group_id: { type: 'integer', example: 1 },
                     user_id: { type: 'integer', example: 2 },
-                    active: { type: 'boolean', example: true },
-                    created_at: { type: 'string', format: 'date-time' },
-                    updated_at: { type: 'string', format: 'date-time' },
+                    deactivated_at: { type: 'boolean', example: null },
+                    createdAt: { type: 'string', format: 'date-time' },
+                    updatedAt: { type: 'string', format: 'date-time' },
                   },
                 },
               },
@@ -58,7 +58,7 @@ export const groupParticipantsSwagger = {
         },
       },
     },
-    '/group-participants/access-code/{accessCode}': {
+    '/participants/access-code/{accessCode}': {
       post: {
         tags: ['GroupParticipants'],
         summary: 'Adicionar usuário via código de acesso do grupo',
@@ -81,7 +81,9 @@ export const groupParticipantsSwagger = {
                     id: { type: 'integer', example: 10 },
                     group_id: { type: 'integer', example: 1 },
                     user_id: { type: 'integer', example: 3 },
-                    active: { type: 'boolean', example: true },
+                    deactivated_at: { type: 'boolean', example: true },
+                    createdAt: { type: 'string', format: 'date-time' },
+                    updatedAt: { type: 'string', format: 'date-time' },
                   },
                 },
               },
@@ -106,7 +108,7 @@ export const groupParticipantsSwagger = {
         },
       },
     },
-    '/group-participants/group/{groupId}': {
+    '/participants/group/{groupId}': {
       get: {
         tags: ['GroupParticipants'],
         summary: 'Listar todos os participantes de um grupo',
@@ -129,9 +131,10 @@ export const groupParticipantsSwagger = {
                     type: 'object',
                     properties: {
                       id: { type: 'integer' },
-                      user_id: { type: 'integer' },
-                      group_id: { type: 'integer' },
-                      active: { type: 'boolean' },
+                      name: { type: 'string' },
+                      avatar: { type: 'string' },
+                      joinedAt: { type: 'string', format: 'date-time' },
+                      isGroupOwner: { type: 'boolean' },
                     },
                   },
                 },
@@ -149,7 +152,7 @@ export const groupParticipantsSwagger = {
         },
       },
     },
-    '/group-participants/user/{userId}': {
+    '/participants/user/{userId}': {
       get: {
         tags: ['GroupParticipants'],
         summary: 'Listar todos os grupos de um usuário',
@@ -171,8 +174,12 @@ export const groupParticipantsSwagger = {
                   items: {
                     type: 'object',
                     properties: {
-                      group_id: { type: 'integer' },
-                      group_name: { type: 'string' },
+                      id: { type: 'integer', example: 10 },
+                      group_id: { type: 'integer', example: 1 },
+                      user_id: { type: 'integer', example: 3 },
+                      deactivated_at: { type: 'boolean', example: true },
+                      createdAt: { type: 'string', format: 'date-time' },
+                      updatedAt: { type: 'string', format: 'date-time' },
                     },
                   },
                 },
@@ -190,7 +197,7 @@ export const groupParticipantsSwagger = {
         },
       },
     },
-    '/group-participants/{id}': {
+    '/participants/{id}': {
       get: {
         tags: ['GroupParticipants'],
         summary: 'Buscar participante pelo ID',
@@ -210,10 +217,12 @@ export const groupParticipantsSwagger = {
                 schema: {
                   type: 'object',
                   properties: {
-                    id: { type: 'integer' },
-                    user_id: { type: 'integer' },
-                    group_id: { type: 'integer' },
-                    active: { type: 'boolean' },
+                    id: { type: 'integer', example: 10 },
+                    group_id: { type: 'integer', example: 1 },
+                    user_id: { type: 'integer', example: 3 },
+                    deactivated_at: { type: 'boolean', example: true },
+                    createdAt: { type: 'string', format: 'date-time' },
+                    updatedAt: { type: 'string', format: 'date-time' },
                   },
                 },
               },
@@ -250,7 +259,25 @@ export const groupParticipantsSwagger = {
         },
         responses: {
           200: {
-            description: 'Participante atualizado com sucesso',
+            description: 'Participante Atualizado com Sucesso',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      id: { type: 'integer', example: 10 },
+                      group_id: { type: 'integer', example: 1 },
+                      user_id: { type: 'integer', example: 3 },
+                      deactivated_at: { type: 'boolean', example: true },
+                      createdAt: { type: 'string', format: 'date-time' },
+                      updatedAt: { type: 'string', format: 'date-time' },
+                    },
+                  },
+                },
+              },
+            },
           },
           400: {
             description: 'Dados inválidos',
@@ -302,7 +329,7 @@ export const groupParticipantsSwagger = {
         },
       },
     },
-    '/group-participants/group/{groupId}/user/{userId}': {
+    '/participants/group/{groupId}/user/{userId}': {
       delete: {
         tags: ['GroupParticipants'],
         summary: 'Desativar participante com base no grupo e usuário',
