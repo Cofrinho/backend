@@ -50,7 +50,6 @@ class ExpenseService {
     value,
     balance,
     due_date,
-    expense_type,
     participants,
   }) {
     if (await this.expenseRepository.findByName(name)) {
@@ -68,7 +67,6 @@ class ExpenseService {
       value,
       balance,
       due_date,
-      expense_type,
     });
 
     await this.expenseMemberService.saveAll(expenseId, participants);
