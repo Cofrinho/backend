@@ -6,6 +6,12 @@ class ExpenseMemberRepository {
     return expenseMember;
   }
 
+  async findByExpenseIdAndUserId(expenseId, userId) {
+    return await ExpenseMember.findOne({
+      where: { user_id: userId, expense_id: expenseId },
+    });
+  }
+
   async findAllByExpense(expense_id) {
     const expenseMembers = await ExpenseMember.findAll({
       where: {

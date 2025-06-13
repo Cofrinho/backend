@@ -9,7 +9,7 @@ router.get('/:id/expenses/:expenseId', ExpenseController.getByIdAndGroup);
 router.get('/:id/expenses/:expenseId/members', ExpenseController.getMembers);
 router.post('/:groupId/expenses', ExpenseController.save);
 router.post(
-  '/expenseMembers/:expenseMemberId/transactions',
+  '/expenses/:expenseId/transactions',
   ExpenseController.createExpenseTransaction,
 );
 router.post('/expenses/:expenseId/payments', ExpenseController.paymentsExpense);

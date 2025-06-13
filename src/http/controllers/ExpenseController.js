@@ -65,11 +65,13 @@ const ExpenseController = {
   },
 
   async createExpenseTransaction(req, res) {
-    const { expenseMemberId } = req.params;
+    const { expenseId } = req.params;
+    const userId = req.user.id;
     try {
       const expenseTransaction =
         await expenseTransactionService.createExpenseTransaction(
-          expenseMemberId,
+          expenseId,
+          userId,
         );
       return res.status(200).json(expenseTransaction);
     } catch (error) {
