@@ -91,7 +91,7 @@ export default class AccountService {
       ...transactions.map((t) => mapTransaction(t, 'transaction')),
     ]
       .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 3);
+      .slice(0, limit);
     return allTransactions;
   }
 }

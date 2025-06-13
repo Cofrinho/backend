@@ -14,7 +14,7 @@ class ExpenseMemberRepository {
       include: [
         {
           model: User,
-          attributes: ['name'],
+          attributes: ['name', 'avatar_url'],
         },
       ],
       attributes: ['amount', 'percentage_paid', 'status'],
