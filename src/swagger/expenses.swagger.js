@@ -151,7 +151,6 @@ export const expensesSwagger = {
         type: 'object',
         required: ['groupId', 'title', 'amount', 'expenseType', 'dueDate'],
         properties: {
-          group_id: { type: 'integer', example: 10 },
           name: { type: 'string', example: 'Dinner with friends' },
           description: {
             type: 'string',
@@ -160,7 +159,7 @@ export const expensesSwagger = {
           },
           value: { type: 'number', format: 'float', example: 150.75 },
           balance: { type: 'number', format: 'float', example: 0 },
-          due_date: { type: 'string', format: 'date', example: '2025-06-15' },
+          dueDate: { type: 'string', format: 'date', example: '2025-06-15' },
           participants: {
             type: 'array',
             items: {
@@ -169,6 +168,11 @@ export const expensesSwagger = {
               properties: {
                 userId: { type: 'integer', example: 42 },
                 amount: { type: 'number', format: 'float', example: 50.25 },
+                percentagePaid: {
+                  type: 'number',
+                  format: 'float',
+                  example: 45,
+                },
               },
             },
           },
