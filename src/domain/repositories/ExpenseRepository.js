@@ -20,7 +20,7 @@ class ExpenseRepository {
         'status',
         'value',
         'balance',
-        'due_date',
+        ['due_date', 'dueDate'],
       ],
     });
     return expense;
