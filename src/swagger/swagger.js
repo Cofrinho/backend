@@ -35,6 +35,8 @@ const swaggerSpec = {
     ...openFinanceSwagger.paths,
     ...accountSwagger.paths,
     ...groupParticipantsSwagger.paths,
+    ...groupsSwagger.paths,
+    ...expensesSwagger.paths,
   },
   components: {
     ...swaggerDefinition.components,
