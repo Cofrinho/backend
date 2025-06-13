@@ -21,13 +21,13 @@ export const expensesSwagger = {
         properties: {
           id: { type: 'integer', example: 1 },
           groupId: { type: 'integer', example: 10 },
-          title: { type: 'string', example: 'Dinner with friends' },
+          name: { type: 'string', example: 'Dinner with friends' },
           description: {
             type: 'string',
             example: 'Dinner at Italian restaurant',
             nullable: true,
           },
-          amount: { type: 'number', format: 'float', example: 150.75 },
+          value: { type: 'number', format: 'float', example: 150.75 },
           balance: {
             type: 'number',
             format: 'float',
@@ -129,21 +129,19 @@ export const expensesSwagger = {
             format: 'uuid',
             example: 'e7d0f7b2-9e34-4f87-9d9c-abcdef123456',
           },
-          userId: { type: 'integer', example: 42 },
-          expenseId: { type: 'integer', example: 1 },
+          user_id: { type: 'integer', example: 42 },
+          expense_id: { type: 'integer', example: 1 },
           description: { type: 'string', example: 'Payment made' },
-          value: { type: 'number', format: 'float', example: 75.5 },
-          type: { type: 'string', example: 'PAYMENT' },
+          amount: { type: 'number', format: 'float', example: 75.5 },
           createdAt: { type: 'string', format: 'date-time' },
           updatedAt: { type: 'string', format: 'date-time' },
         },
         required: [
           'id',
-          'userId',
-          'expenseId',
+          'user_id',
+          'expense_id',
           'description',
-          'value',
-          'type',
+          'amount',
           'createdAt',
           'updatedAt',
         ],
@@ -153,16 +151,17 @@ export const expensesSwagger = {
         type: 'object',
         required: ['groupId', 'title', 'amount', 'expenseType', 'dueDate'],
         properties: {
-          groupId: { type: 'integer', example: 10 },
-          title: { type: 'string', example: 'Dinner with friends' },
+          group_id: { type: 'integer', example: 10 },
+          name: { type: 'string', example: 'Dinner with friends' },
           description: {
             type: 'string',
             example: 'Dinner at Italian restaurant',
             nullable: true,
           },
-          amount: { type: 'number', format: 'float', example: 150.75 },
-          dueDate: { type: 'string', format: 'date', example: '2025-06-15' },
-          members: {
+          value: { type: 'number', format: 'float', example: 150.75 },
+          balance: { type: 'number', format: 'float', example: 0 },
+          due_date: { type: 'string', format: 'date', example: '2025-06-15' },
+          participants: {
             type: 'array',
             items: {
               type: 'object',
@@ -179,21 +178,24 @@ export const expensesSwagger = {
       ExpenseUpdateDTO: {
         type: 'object',
         properties: {
-          title: { type: 'string', example: 'Dinner updated' },
+          id: { type: 'integer', example: 10 },
+          group_id: { type: 'integer', example: 10 },
+          name: { type: 'string', example: 'Dinner updated' },
           description: {
             type: 'string',
             example: 'Updated description',
             nullable: true,
           },
-          amount: { type: 'number', format: 'float', example: 160.0 },
+          value: { type: 'number', format: 'float', example: 160.0 },
+          balance: { type: 'number', format: 'float', example: 160.0 },
           status: { type: 'string', example: 'PAID' },
-          paidAt: {
+          paid_at: {
             type: 'string',
             format: 'date-time',
             example: '2025-06-05T12:00:00Z',
             nullable: true,
           },
-          dueDate: { type: 'string', format: 'date', example: '2025-06-20' },
+          due_date: { type: 'string', format: 'date', example: '2025-06-20' },
         },
       },
 
