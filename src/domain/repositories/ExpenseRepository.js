@@ -1,6 +1,6 @@
 import { Expense } from '../models/Expense.js';
 import { AppError } from '../../shared/errors/AppError.js';
-
+import { Group } from '../models/Group.js';
 class ExpenseRepository {
   async findAllByGroup(groupId) {
     const expenses = await Expense.findAll({
@@ -61,6 +61,17 @@ class ExpenseRepository {
     if (rowsAffected === 0) {
       throw new AppError('Failed to update expense.', 400);
     }
+  }
+
+  async findByIdAndGroupId(id){
+    return await Expense.findByPk(id, {
+      include: [
+        {
+          model: Group,
+          attributes: ['id']
+        }
+      ]
+    })
   }
 }
 

@@ -27,4 +27,21 @@ export default class ExpensePaymentRepository {
 
     return expenses;
   }
+
+  static async findById(id){
+    return await ExpensePayment.findByPk(id, {
+      include: [
+        {
+          model: Expense,
+          attributes: ['name'],
+          include: [
+            {
+              model: Group,
+              attributes: ['id']
+            }
+          ]
+        }
+      ]
+    });
+  }
 }

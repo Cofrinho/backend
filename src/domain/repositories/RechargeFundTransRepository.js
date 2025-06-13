@@ -10,4 +10,8 @@ export default class RechargeFundTransactionRepository {
     });
     return recharges;
   }
+
+  static async findById(id){
+    return await RechargeFundsTransaction.findByPk(id);
+  }
 }

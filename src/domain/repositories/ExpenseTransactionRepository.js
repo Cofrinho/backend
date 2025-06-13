@@ -24,6 +24,23 @@ class ExpenseTransactionRepository {
 
     return expenses;
   }
+
+  async findById(id){
+    return await ExpenseTransaction.findByPk(id, {
+      include: [
+        {
+          model: Expense,
+          attributes: ['name'],
+          include: [
+            {
+              model: Group,
+              attributes: ['id']
+            }
+          ]
+        }
+      ]
+    })
+  }
 }
 
 export { ExpenseTransactionRepository };
