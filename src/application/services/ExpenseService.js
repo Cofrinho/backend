@@ -7,12 +7,14 @@ import ExpensePaymentRepository from '../../domain/repositories/ExpensePaymentRe
 import GroupService from './GroupService.js';
 import CreateNotificationDTO from '../dtos/CreateNotificationDTO.js';
 import NotificationService from './NotificationService.js';
+import { ExpenseMemberRepository } from '../../domain/repositories/ExpenseMemberRepository.js';
 
 class ExpenseService {
   constructor() {
     this.expenseRepository = new ExpenseRepository();
     this.expenseTransactionRepository = new ExpenseTransactionRepository();
     this.expenseMemberService = new ExpenseMemberService();
+    this.expenseMemberRepository = new ExpenseMemberRepository();
   }
 
   async getAllByGroup(groupId) {
@@ -43,7 +45,8 @@ class ExpenseService {
 
     const expense = await this.expenseRepository.findByIdAndGroup(id, groupId);
     const expenseMembers =
-      await this.expenseTransactionRepository.findAllPaidByExpenseId(id);
+      await this.expenseMemberRepository.findAllByExpense(id);
+
     return {
       ...expense,
       members: expenseMembers,

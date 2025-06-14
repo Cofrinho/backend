@@ -22,6 +22,7 @@ class ExpenseRepository {
         'balance',
         ['due_date', 'dueDate'],
       ],
+      raw: true,
     });
     return expense;
   }
@@ -63,15 +64,15 @@ class ExpenseRepository {
     }
   }
 
-  async findByIdAndGroupId(id){
+  async findByIdAndGroupId(id) {
     return await Expense.findByPk(id, {
       include: [
         {
           model: Group,
-          attributes: ['id']
-        }
-      ]
-    })
+          attributes: ['id'],
+        },
+      ],
+    });
   }
 }
 
