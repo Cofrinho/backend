@@ -4,13 +4,14 @@ import seedGroups from './20250603130634-demo-group.cjs';
 import seedGroupParticipants from './20250603130640-demo-group-participant.cjs';
 import seedAccounts from './20250604143311-demo-accounts.cjs';
 import seedInstitutions from './20250604143246-demo-institutions.cjs';
-
+import seedExpenses from './20250616132132-expenses.cjs';
 const allSeeds = [
   seedUsers,
   seedInstitutions,
   seedAccounts,
   seedGroups,
   seedGroupParticipants,
+  seedExpenses
 ];
 
 const reverseSeeds = [...allSeeds].reverse();
