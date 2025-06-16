@@ -28,6 +28,12 @@ module.exports = {
         logo_url: 'https://api-itau-banking.onrender.com/logo_itau.jpg',
         color: '#FF6A00',
       },
+      {
+        name: 'Banco do Brasil',
+        api_url: 'https://api-bank-9iuq.onrender.com',
+        logo_url: 'https://api-bank-9iuq.onrender.com/logo.jpeg',
+        color: '#FFCC29'
+      }
     ]);
   },
 
