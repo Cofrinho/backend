@@ -1,4 +1,5 @@
 import { ExpenseRepository } from '../../domain/repositories/ExpenseRepository.js';
+import { ExpenseTransactionRepository } from '../../domain/repositories/ExpenseTransactionRepository.js';
 import { Group } from '../../domain/models/Group.js';
 import { AppError } from '../../shared/errors/AppError.js';
 import { ExpenseMemberService } from './ExpenseMemberService.js';
@@ -6,11 +7,14 @@ import ExpensePaymentRepository from '../../domain/repositories/ExpensePaymentRe
 import GroupService from './GroupService.js';
 import CreateNotificationDTO from '../dtos/CreateNotificationDTO.js';
 import NotificationService from './NotificationService.js';
+import { ExpenseMemberRepository } from '../../domain/repositories/ExpenseMemberRepository.js';
 
 class ExpenseService {
   constructor() {
     this.expenseRepository = new ExpenseRepository();
+    this.expenseTransactionRepository = new ExpenseTransactionRepository();
     this.expenseMemberService = new ExpenseMemberService();
+    this.expenseMemberRepository = new ExpenseMemberRepository();
   }
 
   async getAllByGroup(groupId) {
@@ -40,7 +44,13 @@ class ExpenseService {
     }
 
     const expense = await this.expenseRepository.findByIdAndGroup(id, groupId);
-    return expense;
+    const expenseMembers =
+      await this.expenseMemberRepository.findAllByExpense(id);
+
+    return {
+      ...expense,
+      members: expenseMembers,
+    };
   }
 
   async save({
